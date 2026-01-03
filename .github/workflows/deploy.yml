@@ -1,11 +1,8 @@
-# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
-  # 每次推送到 main 分支时触发
   push:
     branches: [ main ]
-  # 允许在 GitHub Actions 页面手动触发
   workflow_dispatch:
 
 permissions:
@@ -23,8 +20,8 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v2
         # with:
-          # path: . # 如果你的 astro 项目不在根目录，请修改这里
-          # node-version: 20 # 如果需要特定 node 版本
+          # path: . 
+          # node-version: 20 
 
   deploy:
     needs: build
