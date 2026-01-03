@@ -51,16 +51,42 @@ const experience = [
 ];
 ---
 
-<BaseLayout title="About Me | Hongyi (Tom) Chen">
+<BaseLayout title="About | Hongyi (Tom) Chen">
   <article class="max-w-3xl mx-auto space-y-12">
     <!-- Header -->
-    <header class="space-y-4 text-center md:text-left">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">About Me</h1>
-      <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
-        I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong>, having recently completed a visiting program at <strong>UC Berkeley</strong> in Fall 2025. 
-        I focus on the productization of LLMs and reimagining Human-AI interaction.
-      </p>
+    <!-- Header -->
+    <header class="flex flex-col-reverse md:flex-row items-start justify-between gap-8 md:gap-12">
+      <div class="flex-[3] space-y-4">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 leading-tight">
+          Hi, I'm Hongyi (Tom) Chen
+        </h1>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong>, having recently completed a visiting program at <strong>UC Berkeley</strong> in Fall 2025. 
+          I focus on the productization of LLMs and reimagining Human-AI interaction.
+        </p>
+      </div>
+      
+      <div class="flex-1 md:flex-none flex justify-center md:justify-end">
+        <div class="relative w-32 h-32 md:w-40 md:h-40 overflow-hidden rounded-full border-2 border-gray-100 shadow-sm shrink-0">
+          <img 
+            src="/me1.jpg" 
+            alt="Hongyi (Tom) Chen" 
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
     </header>
+    
+    <!-- CV Download -->
+    <div class="flex items-center gap-4 p-4 bg-gray-100 rounded-lg border border-gray-200">
+      <p class="text-gray-600 flex-grow">
+        Here is my latest CV (Last updated: Jan 2026)
+      </p>
+      <a href="/resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        Download
+      </a>
+    </div>
 
     <!-- Education -->
     <section>
