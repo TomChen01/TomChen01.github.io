@@ -1,0 +1,42 @@
+---
+import Navigation from '../components/Navigation.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Hongyi (Tom) Chen", description = "Hongyi (Tom) Chen - Portfolio" } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
+    <style is:global>
+      /* Signika Font */
+      :root {
+        --font-sans: 'Signika', sans-serif;
+      }
+      body {
+        font-family: var(--font-sans);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
+    <Navigation />
+    <main class="flex-grow w-full max-w-5xl mx-auto px-6 py-12">
+      <slot />
+    </main>
+    <footer class="py-12 text-center text-sm text-gray-400 border-t border-gray-100 mt-auto">
+      <p>&copy; {new Date().getFullYear()} Hongyi Chen. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

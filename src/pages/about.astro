@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const skills = [
+  {
+    category: "Core AI & Data",
+    // 只有最硬核的库：PyTorch 代表深度学习，Transformers 代表 LLM，Pandas 代表数据处理
+    items: ["Python", "PyTorch", "Transformers", "Pandas", "SQL"]
+  },
+  {
+    category: "Product Engineering",
+    // 只有现代全栈的标准配置：TS 和 React
+    items: ["JavaScript/TypeScript", "React", "Tailwind CSS", "Git", "Linux/Bash"]
+  },
+  {
+    category: "Systems & Academic",
+    // C 代表底层理解(CS61C)，LaTeX 代表学术规范
+    items: ["C","RISC-V", "LaTeX"]
+  }
+];
+
+const experience = [
+  {
+    category: "Research",
+    items: [
+      {
+        role: "Undergraduate Researcher",
+        organization: "Course Project (Advisor: Prof. Sahai @ UC Berkeley)",
+        date: "Nov 2025 – Dec 2025",
+        description: "Investigated model editing on <strong>Pythia-6.9B</strong>, utilizing causal tracing to reveal that targeting polysemantic neurons (FINE) causes significantly more collateral damage than layer-level editing (ROME)."
+      }
+    ]
+  },
+  {
+    category: "Internships",
+    items: [
+      {
+        role: "Fintech Algorithm Intern",
+        organization: "China Merchants Bank (Fintech HQ)",
+        date: "Jul 2025 – Aug 2025",
+        description: "Optimized anti-fraud models to boost <strong>AUC-ROC by 12% (>0.95)</strong> and implemented <strong>Token-level XAI</strong> to reduce false-positive rates in production."
+      },
+      {
+        role: "Data Analysis Intern",
+        organization: "DigitSuper Technology",
+        date: "Apr 2025 – Jun 2025",
+        description: "Engineered Python/SQL pipelines for large-scale ad data and drove a <strong>10% ROAS improvement</strong> through Factorial A/B testings on bidding strategies."
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout title="About Me | Hongyi (Tom) Chen">
+  <article class="max-w-3xl mx-auto space-y-12">
+    <!-- Header -->
+    <header class="space-y-4 text-center md:text-left">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">About Me</h1>
+      <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
+        I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong>, having recently completed a visiting program at <strong>UC Berkeley</strong> in Fall 2025. 
+        I focus on the productization of LLMs and reimagining Human-AI interaction.
+      </p>
+    </header>
+
+    <!-- Education -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
+        Education
+      </h2>
+      <div class="relative space-y-8 ml-3 pl-0.5">
+        <div class="absolute top-2 bottom-0 left-0 w-0.5 bg-gray-200"></div>
+        <div class="relative pl-8">
+          <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-gray-900"></div>
+          <h3 class="text-lg font-semibold text-gray-900">The Chinese University of Hong Kong, Shenzhen</h3>
+          <p class="text-gray-600">B.S. in Data Science</p>
+          <p class="text-sm text-gray-500 mt-1">2023 - Present</p>
+        </div>
+        <div class="relative pl-8">
+          <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gray-200 border-2 border-gray-300"></div>
+          <h3 class="text-lg font-semibold text-gray-900">University of California, Berkeley</h3>
+          <p class="text-gray-600">Visiting Student, Computer Science</p>
+          <p class="text-sm text-gray-500 mt-1">Fall 2025</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        Experience
+      </h2>
+      
+      <div class="space-y-10">
+        {experience.map((group) => (
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm border-b pb-2">{group.category}</h3>
+            <div class="space-y-6">
+              {group.items.map((item) => (
+                <div class="group">
+                  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+                    <h4 class="font-bold text-gray-900 text-lg">{item.role}</h4>
+                    <span class="text-sm text-gray-500 whitespace-nowrap">{item.date}</span>
+                  </div>
+                  <p class="text-gray-500 italic mb-2 text-sm">{item.organization}</p>
+                  <p class="text-gray-600 text-sm leading-relaxed" set:html={item.description}></p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <!-- Projects Link -->
+        <div>
+           <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm border-b pb-2">Selected Projects</h3>
+           <p class="text-gray-600 mb-4">I have worked on various projects involving LLMs, Computer Vision, and Full Stack Development.</p>
+           <a href="/projects" class="inline-flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors">
+             View All Projects 
+             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+        Tech Stack
+      </h2>
+      <div class="space-y-6">
+        {skills.map((group) => (
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{group.category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {group.items.map((skill) => (
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium border border-gray-200">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Hobbies
+      </h2>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+        <li class="flex items-center gap-3">
+          <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+          <span>Soccer</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
+          <span>Marathon & Hiking</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+          <span>Novels & Films</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <span class="w-2 h-2 bg-pink-500 rounded-full"></span>
+          <span>Traveling</span>
+        </li>
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
