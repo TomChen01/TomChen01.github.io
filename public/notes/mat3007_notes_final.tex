@@ -1,0 +1,1142 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK SC}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,multirow,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage{float}
+\usepackage{microtype}
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, urlcolor=blue!50!black, citecolor=blue!50!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\headheight}{14pt}
+\setlist{nosep, leftmargin=*}
+\renewcommand{\arraystretch}{1.18}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\DeclareMathOperator{\argmax}{arg\,max}
+\DeclareMathOperator{\argmin}{arg\,min}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{MAT3007 Notes}
+\rhead{CUHK-Shenzhen, Spring 2026}
+\cfoot{\thepage}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+\titleformat{\paragraph}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{0.8em}{0.35em}
+\newcommand{\ChapterPage}[2]{%
+  \clearpage
+  \thispagestyle{empty}
+  \addcontentsline{toc}{section}{#1}
+  \begin{center}
+    \vspace*{0.23\textheight}
+    {\Huge\bfseries #1\par}
+    \vspace{1.5em}
+    {\large MAT3007 Notes\par}
+    \vfill
+    \begin{minipage}{0.78\textwidth}
+      {\large\bfseries Included lectures}\par\vspace{0.5em}
+      #2
+    \end{minipage}
+  \end{center}
+  \clearpage
+}
+\newcommand{\LectureSection}[1]{%
+  \clearpage
+  \section*{#1}
+  \addcontentsline{toc}{subsection}{#1}
+  \markboth{#1}{#1}
+}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.25\textheight}
+{\Huge\bfseries MAT3007 Notes\par}
+\vspace{1em}
+{\Large Course notes for CUHK-Shenzhen, Spring 2026\par}
+\vspace{3em}
+{\large Hongyi Chen\par}
+\vfill
+{\large Jan 7, 2026\par}
+\end{titlepage}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\ChapterPage{Chapter 1: Linear Programming}{\begin{itemize}
+  \item Lecture 1 \& 2: Introduction and Modeling
+  \item Lecture 3: SVM \& Linear Programming
+  \item Lecture 4: Transformation Techniques
+  \item Lecture 5: Geometry of Linear Programming
+  \item Lecture 6: The Simplex Method
+  \item Lecture 7: Simplex Method Continued
+  \item Lecture 8: The Simplex Tableau
+  \item Lecture 9: Simplex Method Continued
+  \item Lecture 10: Complexity of the Simplex Method \& Duality Theory
+  \item Lecture 11: Weak and Strong Duality
+  \item Lecture 12: Interpreting the Dual \& Sensitivity Analysis
+\end{itemize}}
+
+\LectureSection{Lecture 1 \& 2: Introduction and Modeling}
+
+\paragraph{1. Classification of Optimization Problems}\label{classification-of-optimization-problems}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Constrained} vs \textbf{Unconstrained}
+\item
+  \textbf{Linear} vs \textbf{Non-linear}
+\item
+  \textbf{Continuous} vs \textbf{Integer}
+\end{itemize}
+
+\paragraph{2. Formulating Optimization Problems}\label{formulating-optimization-problems}
+
+\begin{quote}
+\textbf{Optimization Problem Definition:}
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & f(\boldsymbol{x}) \\
+& \text{subject to} & & g_i(\boldsymbol{x}) \leq 0, \quad i = 1, \dots, m, \\
+& & & h_j(\boldsymbol{x}) = 0, \quad j = 1, \dots, p
+\end{aligned}
+\]
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Decision Variables} \(\rightsquigarrow\) Decision variables \(\boldsymbol{x}\)
+\item
+  \textbf{Objective Function} \(\rightsquigarrow\) Objective function \(f(\boldsymbol{x})\)
+\item
+  \textbf{Constraints} \(\rightsquigarrow\) Constraint functions: equalities / inequalities
+\end{itemize}
+
+\LectureSection{Lecture 3: SVM \& Linear Programming}
+
+\paragraph{1. Support Vector Machine (SVM) - Classification}\label{support-vector-machine-svm---classification}
+
+\textbf{Goal:} Find a linear function \(f(\boldsymbol{x}) = \boldsymbol{w}^T \boldsymbol{x} + b\) separating the data points such that:
+
+\[
+\begin{aligned}
+f(\boldsymbol{x}_i) \geq +1 \quad & \text{if } y_i = +1 \\
+f(\boldsymbol{x}_i) \leq -1 \quad & \text{if } y_i = -1
+\end{aligned}
+\]
+
+\begin{quote}
+\textbf{Note: Why +1 and -1?} The linear classifier is not unique. We use the constants +1 and -1 to fix the scale of \(\boldsymbol{w}\) and \(b\). The margin is given by \(\frac{2}{\|\boldsymbol{w}\|}\).
+\end{quote}
+
+\textbf{A. Hard-margin SVM} Find the hyperplane that maximizes the margin:
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{w}, b}{\text{maximize}} & & \frac{2}{\|\boldsymbol{w}\|} \\
+& \text{subject to} & & y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b) \geq 1, \quad i = 1, \dots, m
+\end{aligned}
+\]
+
+\(\rightarrow\) \textbf{Equivalent to minimizing:}
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{w}, b}{\text{minimize}} & & \frac{1}{2} \|\boldsymbol{w}\|^2 \\
+& \text{subject to} & & y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b) \geq 1, \quad i = 1, \dots, m
+\end{aligned}
+\]
+
+\textbf{B. Soft-margin SVM} Used when the training set cannot be perfectly separated by a hyperplane (not linearly separable).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Hinge Loss:} \[\max\{0, 1 - y_i f(\boldsymbol{w}^T \boldsymbol{x}_i + b)\}\]
+
+  \begin{itemize}
+  \tightlist
+  \item
+    If a point is on the correct side and far enough from the margin, loss is 0.
+  \item
+    If a point is on the wrong side or within the margin, loss is positive (\(\propto\) degree of misclassification).
+  \end{itemize}
+\end{itemize}
+
+\paragraph{2. Linear Optimization Formulation for SVM}\label{linear-optimization-formulation-for-svm}
+
+Define slack variable \(t_i = \max\{0, 1 - y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b)\}\). We can rewrite the SVM Problem as:
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{w}, b, \boldsymbol{t}}{\text{minimize}} & & \sum_{i=1}^m t_i \\
+& \text{subject to} & & t_i = \max\{0, 1 - y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b)\}, \quad i = 1, \dots, m
+\end{aligned}
+\]
+
+\textbf{Relaxation Steps:} 1. Relax ``\(=\)'' to ``\(\geq\)''. 2. Split the max function constraint: \(t_i \geq \max\{0, \dots\}\) is equivalent to \(t_i \geq \dots\) AND \(t_i \geq 0\).
+
+\textbf{Final Optimization Problem:}
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{w}, b, \boldsymbol{t}}{\text{minimize}} & & \sum_{i=1}^m t_i \\
+& \text{subject to} & & y_i (\boldsymbol{w}^T \boldsymbol{x}_i + b) + t_i \geq 1, \quad i = 1, \dots, m \\
+& & & t_i \geq 0, \quad i = 1, \dots, m
+\end{aligned}
+\]
+
+\paragraph{3. Linear Programming (LP) Definitions}\label{linear-programming-lp-definitions}
+
+An LP problem is an optimization problem where the objective and all constraints are linear.
+
+\textbf{General Form of LP:}
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A_1 x} \geq \boldsymbol{b} \\
+& & & \boldsymbol{A_2 x} \leq \boldsymbol{d} \\
+& & & \boldsymbol{A_3 x} = \boldsymbol{f} \\
+& & & x_i \geq 0, \quad i \in N_1 \\
+& & & x_i \leq 0, \quad i \in N_2 \\
+& & & x_i \text{ free}, \quad i \in N_3
+\end{aligned}
+\]
+
+\textbf{Standard Form of LP:}
+
+\[
+\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} = \boldsymbol{b} \\
+& & & x_i \geq 0
+\end{aligned}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  Where \(\boldsymbol{A} \in \mathbb{R}^{m \times n}\), assume \(m < n\) to ensure infinite solutions (degrees of freedom).
+\end{itemize}
+
+\paragraph{4. Converting to Standard Form}\label{converting-to-standard-form}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Objective Function:} Convert maximization to minimization. \[\underset{\boldsymbol{x}}{\text{maximize}} \quad f(\boldsymbol{x}) \quad \Longrightarrow \quad \underset{\boldsymbol{x}}{\text{minimize}} \quad -f(\boldsymbol{x})\]
+\item
+  \textbf{Inequalities:} Convert to equalities by introducing slack/surplus variables.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For \(\boldsymbol{A_1 x} \geq \boldsymbol{b}\), introduce \textbf{surplus} variable \(\boldsymbol{s_1} \geq 0\): \[\boldsymbol{A_1 x} - \boldsymbol{s_1} = \boldsymbol{b}\]
+  \item
+    For \(\boldsymbol{A_2 x} \leq \boldsymbol{d}\), introduce \textbf{slack} variable \(\boldsymbol{s_2} \geq 0\): \[\boldsymbol{A_2 x} + \boldsymbol{s_2} = \boldsymbol{d}\]
+  \end{itemize}
+\item
+  \textbf{Free Variables:} Convert to non-negative variables.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For \(x_i\) free, represent it as the difference of two non-negative variables: \[x_i = x_i^+ - x_i^- \quad \text{where } x_i^+, x_i^- \geq 0\]
+  \end{itemize}
+\end{enumerate}
+
+\LectureSection{Lecture 4: Transformation Techniques}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Maximin and Minimax Problems
+\item
+  How to deal with absolute values
+\end{enumerate}
+
+\LectureSection{Lecture 5: Geometry of Linear Programming}
+
+\paragraph{1. Solve LP using Graph (Example)}\label{solve-lp-using-graph-example}
+
+\[
+\begin{aligned}
+\text{maximize} \quad & x_1 + 2x_2 \\
+\text{subject to} \quad & x_1 \leq 100 \\
+& 2x_2 \leq 200 \\
+& x_1 + x_2 \leq 150 \\
+& x_1, x_2 \geq 0
+\end{aligned}
+\]
+
+\textbf{Procedure:} 1. Draw the \textbf{feasible region}. 2. Draw the level sets of the objective function \(x_1 + 2x_2 = c\). 3. Find the largest \(c\) such that the line still touches the feasible region.
+
+\textbf{Observations:} * The feasible region of an LP is a \textbf{polyhedron}. * The optimal solution (if it exists) is at a \textbf{vertex (corner point)} of the feasible region. * Some constraints are active, some are not.
+
+\paragraph{2. Key Definitions}\label{key-definitions}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Polyhedron:} A set that can be written in the form \(\{\boldsymbol{x} \in \mathbb{R}^n : \boldsymbol{A x} \leq \boldsymbol{b}\}\).
+\item
+  \textbf{Convex Set:} A set \(S \subseteq \mathbb{R}^n\) is convex if for any \(\boldsymbol{x}, \boldsymbol{y} \in S\) and any \(\lambda \in [0,1]\), the point \(\lambda \boldsymbol{x} + (1-\lambda) \boldsymbol{y} \in S\).
+\end{itemize}
+
+\paragraph{3. Extreme Points}\label{extreme-points}
+
+Assume a standard form LP where \(\boldsymbol{A}\) has full row rank \(m\).
+
+\textbf{3.1. Basic Solution} \(\boldsymbol{x}\) is a \textbf{basic solution} iff: 1. \(\boldsymbol{A x} = \boldsymbol{b}\) 2. There exist indices \(B(1), \dots, B(m)\) such that the columns \([\boldsymbol{A}_{B(1)} \cdots \boldsymbol{A}_{B(m)}]\) are linearly independent. 3. \(x_i = 0\) for all \(i \notin \{B(1), \dots, B(m)\}\) (Non-basic variables).
+
+\begin{quote}
+\textbf{Algorithm to find a basic solution:} 1. Choose any \(m\) linearly independent columns of \(\boldsymbol{A}\). 2. Set corresponding variables as \textbf{basic variables}; set the rest as \textbf{non-basic variables} (0). 3. Solve the linear system for the basic variables.
+\end{quote}
+
+\textbf{3.2. Basic Feasible Solution (BFS)} A basic solution \(\boldsymbol{x}\) is a \textbf{Basic Feasible Solution} iff \(\boldsymbol{x} \geq 0\).
+
+\textbf{3.3. Fundamental Theorem of LP} Consider a standard form LP where \(\boldsymbol{A}\) has full row rank \(m\): * If the feasible set is non-empty \(\rightarrow\) there exists a BFS. * If there exists an optimal solution \(\rightarrow\) there exists an optimal BFS.
+
+\LectureSection{Lecture 6: The Simplex Method}
+
+\textbf{Motivation:} How to search efficiently among Basic Feasible Solutions (BFS)? \textbf{Idea:} Proceed from one BFS to a neighboring BFS to continuously improve the objective function until optimality is reached.
+
+\textbf{Key Questions:} 1. What is a neighboring BFS? 2. How to find \& move to the neighboring BFS? 3. How to stop?
+
+\paragraph{1. Neighboring BFS}\label{neighboring-bfs}
+
+\textbf{Definition:} Two basic feasible solutions are \textbf{neighboring} iff they differ in exactly one basic variable.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Setup:} Assume current BFS has basis \(B\). \[\mathbf{A}_B = [\boldsymbol{A}_{B(1)} \cdots \boldsymbol{A}_{B(m)}]\] Let \(\mathbf{A}_N\) be the non-basic columns. Then \(\mathbf{A} = [\mathbf{A}_B, \mathbf{A}_N]\) and \(\mathbf{x} = [\mathbf{x}_B; \mathbf{x}_N]\). Currently: \(\mathbf{x}_B = \mathbf{A}_B^{-1} \mathbf{b}\) and \(\mathbf{x}_N = 0\).
+\end{itemize}
+
+\paragraph{2. Moving to a Neighboring BFS}\label{moving-to-a-neighboring-bfs}
+
+We select a non-basic variable \(x_j\) to enter the basis (increase from 0). Move from \(\boldsymbol{x}\) to \(\boldsymbol{x} + \theta \boldsymbol{d}\), where \(\theta > 0\).
+
+\begin{itemize}
+\item
+  \textbf{Direction Vector \(\boldsymbol{d}\):} We need \(\mathbf{A}(\boldsymbol{x} + \theta \boldsymbol{d}) = \boldsymbol{b} \implies \mathbf{A}\boldsymbol{d} = 0\). \[\mathbf{A}_B \boldsymbol{d}_B + \mathbf{A}_N \boldsymbol{d}_N = 0\] Since only \(x_j\) changes among non-basics (\(d_j = 1\), others 0): \[\mathbf{A}_B \boldsymbol{d}_B + \boldsymbol{A}_j = 0 \implies \boldsymbol{d}_B = -\mathbf{A}_B^{-1} \boldsymbol{A}_j\]
+
+  \[\implies \boldsymbol{d} = [\boldsymbol{d}_B; \boldsymbol{d}_N] = [-\mathbf{A}_B^{-1} \boldsymbol{A}_j; 0; \dots; 1; \dots; 0]\]
+\item
+  \textbf{Change in Objective Function:} \[\text{New Cost} = \boldsymbol{c}^T (\boldsymbol{x} + \theta \boldsymbol{d}) = \boldsymbol{c}^T \boldsymbol{x} + \theta \boldsymbol{c}^T \boldsymbol{d}\] The rate of change is \(\boldsymbol{c}^T \boldsymbol{d}\).
+\end{itemize}
+
+\begin{quote}
+\textbf{Definition: Reduced Cost} The reduced cost of variable \(x_j\) is: \[\bar{c}_j = \boldsymbol{c}^T \boldsymbol{d} = \boldsymbol{c}_j - \boldsymbol{c}_B^T \mathbf{A}_B^{-1} \boldsymbol{A}_j\] \emph{A negative reduced cost means introducing \(x_j\) improves (reduces) the objective.}
+\end{quote}
+
+\paragraph{3. Stopping Criterion}\label{stopping-criterion}
+
+If all reduced costs \(\bar{c}_j \geq 0\) for all non-basic variables \(x_j\), then \textbf{STOP}. The current BFS is optimal.
+
+\LectureSection{Lecture 7: Simplex Method Continued}
+
+Recall \texttt{Stopping\ Criterion}: At a certain \(\boldsymbol{x}\), if all reduced costs \(\bar{c}_j \geq 0\), then \(\boldsymbol{x}\) is optimal. What if some \(\bar{c}_j < 0\)? \(\Rightarrow\) By bringing \(x_j\) into the basis, we can reduce the objective.
+
+\paragraph{1. Choosing a Step Size}\label{choosing-a-step-size}
+
+Assume \(\boldsymbol{d}\) is the \(j\)-th basic direction with \(\bar{c}_j < 0\). Moving in this direction can reduce the objective. How far can we go? \[\theta^* = \max \{\theta \geq 0 : \boldsymbol{x} + \theta \boldsymbol{d} \geq 0\}\]
+
+To maintain feasibility (\(\boldsymbol{x} + \theta \boldsymbol{d} \geq 0\)) for every basic variable \(x_i\): \[\theta^* = \min_{i : d_i < 0} -\frac{x_i}{d_i} \]
+
+\paragraph{2. Summary of Simplex Method Steps}\label{summary-of-simplex-method-steps}
+
+\textbf{Initialization:} Find an initial BFS \(\boldsymbol{x}\) with basis \(B\). 1. Compute reduced costs \(\bar{c}_j\) for all non-basic variables. \[\bar{c}_j = \boldsymbol{c}_j - \boldsymbol{c}_B^T \mathbf{A}_B^{-1} \boldsymbol{A}_j\] - If all \(\bar{c}_j \geq 0\), STOP. \(\boldsymbol{x}\) is optimal. - Else, choose a non-basic variable \(x_j\) with \(\bar{c}_j < 0\) to enter the basis. 2. Compute the \(j\)-th basic direction \(\boldsymbol{d}\): \[\boldsymbol{d} = [-\mathbf{A}_B^{-1} \boldsymbol{A}_j; 0; \dots; 1; \dots; 0]\] - If \(d_i \geq 0\) for all basic variables, the problem is unbounded. The optimal value is \(-\infty\). STOP. - Else, compute \(\theta^* = \min_{i : d_i < 0} -\frac{x_i}{d_i}\) to determine the leaving variable. 3. Set \(\boldsymbol{y} = \boldsymbol{x} + \theta^* \boldsymbol{d}\) as the new BFS. The objective value decreases by \(\theta^* \bar{c}_j\). 4. Repeat these procedures.
+
+\paragraph{3. Degeneracy}\label{degeneracy}
+
+\begin{quote}
+Definition: A BFS is \textbf{degenerate} if some of the basic variables are \(0\).
+\end{quote}
+
+Recall that \[\theta^* = \min_{i : d_i < 0} -\frac{x_i}{d_i} \] If for some \(i \in B\), if \(x_i = 0\) and \(d_i < 0\), then \(\theta^* = 0\). Hence \(\boldsymbol{y} = \boldsymbol{x}\),and the objective value does not change.
+
+\textbf{3.1. Reduced Cost in Degeneracy} If the reduced costs vector \(\bar{\boldsymbol{c}} \geq 0\), the current BFS is optimal. But when \(\boldsymbol{x}\) is optimal, it is possible that some \(\bar{c}_j < 0\) （when \(x\) is degenerate).
+
+\textbf{3.2. Pivoting Rules to Avoid Cycling} - \textbf{Smallest Index Rule:} Choose the smallest index \(j\) with \(\bar{c}_j < 0\). - \textbf{Most Negative Rule:} Choose the smallest \(\boldsymbol{c}_j\). - \textbf{Most Decrease Rule:} Choose \(j\) with the smallest \(\theta^* \bar{c}_j\).
+
+\textbf{3.3. Bland's Rule} If we use the smallest index rule for choosing both the entering index and the exiting index, then no cycle will occur in the simplex algorithm.
+
+\LectureSection{Lecture 8: The Simplex Tableau}
+
+\[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} = \boldsymbol{b} \\
+& & & \boldsymbol{x} \geq 0
+\end{aligned}\]
+
+\paragraph{1. Finding an Initial BFS}\label{finding-an-initial-bfs}
+
+\textbf{Two-Phase Method:} - \textbf{Phase 1:} Solve an auxiliary (辅助的) problem. \[
+    \begin{aligned}
+    & \underset{\boldsymbol{x}, \boldsymbol{y}}{\text{minimize}} & & \mathbf{1}^\top \boldsymbol{y} \\
+    & \text{subject to} & & \boldsymbol{Ax} + \boldsymbol{y} = \boldsymbol{b} \\
+    & & & \boldsymbol{x}, \boldsymbol{y} \geq 0
+    \end{aligned}
+    \] Trivial BFS for this problem is \(\boldsymbol{x} = \mathbf{0}\), \(\boldsymbol{y} = \boldsymbol{b}\).
+
+\textbf{Theorem: Feasibility} The original problem is feasible iff the optimal value of the auxiliary problem is 0.
+
+We can solve the auxiliary problem by the simplex method: - If the optimal value is not 0, then we can claim that the original problem is infeasible. - If the optimal value is 0 with solution \((x^*, y^* = 0)\), then \(x^*\) can be viewed as a BFS for the original problem. \(\Rightarrow\) We can start from this point to initialize the simplex method.
+
+If there is at least one basic index in \(y^*\) (degenerate case), \(x^*\) will not contain the full basis \(B\) \(\Rightarrow\) pick any other column from \(A\) (such that it forms a full-rank matrix with \(A_{B(1)}, . . . , A_{B(m-1)})\) in the non-basic part in \(x^*\) to make it a BFS for the original problem.
+
+\textbf{1.1. Procedure of the Two-Phase Method} - \textbf{Phase 1:} 1. Construct the auxiliary problem such that \(\boldsymbol{b} \geq 0\). 2. Solve the auxiliary problem using the simplex method. - \textbf{Phase 2:} Solve the original problem starting from the BFS \(\boldsymbol{x}^*\). \(\Rightarrow\) If \((\boldsymbol{x}^*, \boldsymbol{y}^* = \mathbf{0})\) is degenerate for the auxiliary problem (some artificial variables remain in the basis), supplement indices from the original variables to form a full basis for the original problem.
+
+\textbf{1.2. Big-M Method} Consider the following problem: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} + M \sum_{i \in \mathcal{A}} y_i \\
+& \text{subject to} & & \boldsymbol{A x} + \boldsymbol{y} = \boldsymbol{b} \\
+& & & \boldsymbol{x}, \boldsymbol{y} \geq 0
+\end{aligned}\]
+
+Initial BFS: \(\boldsymbol{x} = \mathbf{0}\), \(\boldsymbol{y} = \boldsymbol{b}\).
+
+In the simplex procedure, treat \(M\) as a sufficiently large positive constant. If the original problem is feasible, the optimal solution will satisfy \(\boldsymbol{y}^* = \mathbf{0}\) and will not involve any artificial variables in the basis.
+
+\paragraph{2. Simplex Tableau}\label{simplex-tableau}
+
+\textbf{2.1. Structure of the Tableau} \[
+\begin{array}{|c|c|}
+\hline \boldsymbol{c}^\top - \boldsymbol{c}_B^\top \boldsymbol{A}_B^{-1} \boldsymbol{A} & -\boldsymbol{c}_B^\top \boldsymbol{A}_B^{-1} \boldsymbol{b} \\
+\hline \boldsymbol{A}_B^{-1} \boldsymbol{A} & \boldsymbol{A}_B^{-1} \boldsymbol{b} \\
+\hline
+\end{array}
+\]
+
+\textbf{Lower Part:} \[\boldsymbol{Ax} = \boldsymbol{b} \Rightarrow \boldsymbol{A_B^{-1} A x} = \boldsymbol{A_B^{-1} b}\] - Writing \(\boldsymbol{A} = [\boldsymbol{A}_B, \boldsymbol{A}_N]\), we have: \[\boldsymbol{A}_B^{-1} \boldsymbol{A} = [\mathbf{I}, \boldsymbol{A}_B^{-1} \boldsymbol{A}_N]\] So, this block must contain an identity matrix. - Writing \(\boldsymbol{x} = [\boldsymbol{x}_B; \boldsymbol{x}_N] = [\boldsymbol{A}_B^{-1} \boldsymbol{b}; 0]\). So, this block contains the current BFS.
+
+\textbf{Upper Part:} The term \(\boldsymbol{\bar{c}}^\top = \boldsymbol{c}^\top - \boldsymbol{c}_B^\top \boldsymbol{A}_B^{-1} \boldsymbol{A}\) is the reduced cost at current basis.
+
+The term \(-\boldsymbol{c}_B^\top \boldsymbol{A}_B^{-1} \boldsymbol{b} = -\boldsymbol{c}_B^\top \boldsymbol{x}_B\) is the negative of the current objective value.
+
+\textbf{2.2. Canonical Form of the Tableau} The simplex tableau should look like (after reordering the columns in \([\boldsymbol{B}; \boldsymbol{N}]\)):
+
+\[
+\begin{array}{|cc|c|}
+\hline \boldsymbol{0}_m^\top & \boldsymbol{c}_N^\top - \boldsymbol{c}_B^\top \boldsymbol{A}_B^{-1} \boldsymbol{A}_N & -\boldsymbol{c}_B^\top \boldsymbol{x}_B \\
+\hline I_m & \boldsymbol{A}_B^{-1} \boldsymbol{A}_N & \boldsymbol{x}_B \\
+\hline
+\end{array}
+\]
+
+If in a simplex tableau, the numbers in the top-left block are all nonnegative, then we have reached optimality.
+
+\LectureSection{Lecture 9: Simplex Method Continued}
+
+\paragraph{1. Pivoting}\label{pivoting}
+
+\textbf{Step 1: Choose the Incoming Index} Check the reduced costs in the top-left block.
+
+\textbf{Step 2: \(\theta^*\) and the Leaving Index} Assume we chose column \(j\) as the incoming index. Incoming column is called the \textbf{pivot column}. The step size \(\theta^*\) is: \[\theta^* = \min_{i : d_i < 0} -\frac{x_i}{d_i}\] where \(x_i\) is the \(i\)th entry of the BS and \(\boldsymbol{d}_B = -\mathbf{A}_B^{-1} \boldsymbol{A}_j\). \textbf{Minimal Ratio Test (MRT)} In the simplex tableau, \[\theta^* = \min_{i} \{\frac{x_i}{\bar{A}_{ij}}: \bar{A}_{ij} > 0\}\] where \(x_i \in \boldsymbol{x}_B\) is the lower right block and \(\bar{A}\) is the lower left block.
+
+\textbf{Updating the Tableau:} Assume we have determined the incoming and leaving index (pivot element \(\bar{A}_{ij}\)). We perform the following steps: a. Divide each element in the pivot row by the pivot element. b. Add proper multiples (could be negative) of the pivot row (after the first step) to each other rows, s.t. all other elements in the pivot column become zeros (including the top row).
+
+\paragraph{2. Two-Phase Method in Simplex Tableau}\label{two-phase-method-in-simplex-tableau}
+
+When there is no obvious initial basic feasible solution, we can use the two-phase method.
+
+\textbf{Phase I:} * There is a trivial initial BFS to the auxiliary problem. Then construct the initial tableau based on the trivial initial BFS and solve the auxiliary problem from there.
+
+\textbf{Phase II:} * When enter Phase II, construct the initial tableau from the final tableau of Phase I. * When there is basic index in \(y^* = 0\). Choose one index in the non-basic part of \(x^*\) to form a new basis \(B_b\). The main difficulty is how to read \(\boldsymbol{A}_{B_b}^{-1} \boldsymbol{A}\) from the final tableau of Phase I.
+
+\LectureSection{Lecture 10: Complexity of the Simplex Method \& Duality Theory}
+
+\paragraph{1. Complexity of the Simplex Method}\label{complexity-of-the-simplex-method}
+
+\paragraph{2. Duality Theory}\label{duality-theory}
+
+\textbf{2.1. Formulation of the Dual Problem}
+
+Consider a standard form LP: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} = \boldsymbol{b} \\
+& & & \boldsymbol{x} \geq 0
+\end{aligned}\]
+
+Write it as: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} + max_{\boldsymbol{y} \in \mathbb{R}^m} \boldsymbol{y}^T (\boldsymbol{b} - \boldsymbol{A x}) \\
+& \text{subject to} & & \boldsymbol{x} \geq 0  
+\end{aligned}\]
+
+Then we have: \[ \min_{\boldsymbol{x} \geq 0} \quad \max_{\boldsymbol{y} \in \mathbb{R}^m} \left( \boldsymbol{c}^T \boldsymbol{x} + \boldsymbol{y}^T (\boldsymbol{b} - \boldsymbol{Ax}) \right) \]
+
+Exchange max and min: \[
+\max_{\boldsymbol{y} \in \mathbb{R}^m} \left( \boldsymbol{b}^T \boldsymbol{y} + \min_{\boldsymbol{x} \geq 0} \boldsymbol{x}^T (\boldsymbol{c} - \boldsymbol{A}^T \boldsymbol{y}) \right)
+\] Equivalently, \[
+\begin{aligned}
+& \underset{\boldsymbol{y} \in \mathbb{R}^
+m}{\text{maximize}} & & \boldsymbol{b}^T \boldsymbol{y} \\
+& \text{subject to} & & \boldsymbol{A}^T \boldsymbol{y} \leq \boldsymbol{c}
+\end{aligned}
+\]
+
+\textbf{2.2. Definition} Given the \textbf{Primal Problem} in standard form: \[
+\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} = \boldsymbol{b} \\
+& & & \boldsymbol{x} \geq 0
+\end{aligned}
+\] The corresponding \textbf{Dual Problem} is defined as: \[
+\begin{aligned}
+& \underset{\boldsymbol{y} \in \mathbb{R}^m}{\text{maximize}} & & \boldsymbol{b}^T \boldsymbol{y} \\
+& \text{subject to} & & \boldsymbol{A}^T \boldsymbol{y} \leq \boldsymbol{c}
+\end{aligned}
+\]
+
+\textbf{The dual of the dual problem is the primal problem.}
+
+\textbf{2.3. Primal and Dual Relationship}
+
+\[
+\begin{array}{l||l}
+\text{Primal} & \text{Dual} \\
+\hline \\
+\begin{aligned}
+\min \quad & \boldsymbol{c}^\top \boldsymbol{x} \\
+\text{s.t.} \quad & \boldsymbol{a}_i^\top \boldsymbol{x} \geq b_i, \quad i \in M_1, \\
+& \boldsymbol{a}_i^\top \boldsymbol{x} \leq b_i, \quad i \in M_2, \\
+& \boldsymbol{a}_i^\top \boldsymbol{x} = b_i, \quad i \in M_3, \\
+& x_j \geq 0, \quad j \in N_1, \\
+& x_j \leq 0, \quad j \in N_2, \\
+& x_j \text{ free}, \quad j \in N_3,
+\end{aligned} & 
+\begin{aligned}
+\max \quad & \boldsymbol{b}^\top \boldsymbol{y} \\
+\text{s.t.} \quad & y_i \geq 0, \quad i \in M_1 \\
+& y_i \leq 0, \quad i \in M_2 \\
+& y_i \text{ free}, \quad i \in M_3 \\
+& \boldsymbol{A}_j^\top \boldsymbol{y} \leq c_j, \quad j \in N_1 \\
+& \boldsymbol{A}_j^\top \boldsymbol{y} \geq c_j, \quad j \in N_2 \\
+& \boldsymbol{A}_j^\top \boldsymbol{y} = c_j, \quad j \in N_3
+\end{aligned}
+\end{array}
+\]
+
+\LectureSection{Lecture 11: Weak and Strong Duality}
+
+\paragraph{1. Weak Duality Theorem}\label{weak-duality-theorem}
+
+\[
+\begin{array}{l||l}
+\text{Primal} & \text{Dual} \\
+\hline \\
+\begin{aligned}
+\min \quad & \boldsymbol{c}^\top \boldsymbol{x} \\
+\text{s.t.} \quad & \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}, \boldsymbol{x} \geq \mathbf{0}
+\end{aligned} & 
+\begin{aligned}
+\max \quad & \boldsymbol{b}^\top \boldsymbol{y} \\
+\text{s.t.} \quad & \boldsymbol{A}^\top \boldsymbol{y} \leq \boldsymbol{c}
+\end{aligned}
+\end{array}
+\]
+
+If \(\boldsymbol{x}\) is feasible for the primal problem and \(\boldsymbol{y}\) is feasible for the dual, then: \[\boldsymbol{b}^\top \boldsymbol{y} \leq \boldsymbol{c}^\top \boldsymbol{x}\]
+
+\begin{itemize}
+\tightlist
+\item
+  If the primal problem is unbounded (i.e., the `optimal value' is \(-\infty\)), then the dual problem must be infeasible.
+\item
+  If the dual problem is unbounded (i.e., the `optimal value' is \(+\infty\)), then the primal problem must be infeasible.
+\end{itemize}
+
+\paragraph{2. Strong Duality Theorem}\label{strong-duality-theorem}
+
+\textbf{Optimality conditions for LP (sufficient):} If \(\boldsymbol{x}, \boldsymbol{y}\) satisfy: 1. \(\boldsymbol{x}\) is primal feasible. 2. \(\boldsymbol{y}\) is dual feasible. 3. The objective values coincide, i.e., \(\boldsymbol{c}^\top \boldsymbol{x} = \boldsymbol{b}^\top \boldsymbol{y}\).
+
+Then, \(\boldsymbol{x}\) and \(\boldsymbol{y}\) are optimal solutions of the primal and dual problems, respectively.
+
+\textbf{Strong Duality Theorem} If a linear program has an optimal solution, so does its dual and the optimal values of the primal and dual problems are equal.
+
+\paragraph{3. Optimality, Feasibility, and Boundedness}\label{optimality-feasibility-and-boundedness}
+
+Thus, solving LPs is equivalent to solving the following linear inequality system (a feasibility problem): * \(\boldsymbol{Ax} = \boldsymbol{b}, \boldsymbol{x} \geq \mathbf{0}\) * \(\boldsymbol{A}^\top \boldsymbol{y} \leq \boldsymbol{c}\) * \(\boldsymbol{b}^\top \boldsymbol{y} = \boldsymbol{c}^\top \boldsymbol{x}\)
+
+\begin{longtable}[]{@{}lccc@{}}
+\toprule\noalign{}
+P ~D & Finite Optimum & Unbounded & Infeasible \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Finite Optimum} & Possible & & \\
+\textbf{Unbounded} & & & Possible \\
+\textbf{Infeasible} & & Possible & Possible \\
+\end{longtable}
+
+\paragraph{4. Complementary Conditions}\label{complementary-conditions}
+
+Let \(\boldsymbol{x}\) and \(\boldsymbol{y}\) be feasible solutions for the primal and dual problems, respectively. Then, \(\boldsymbol{x}\) and \(\boldsymbol{y}\) are optimal if and only if: \[x_j (\boldsymbol{c}_j - \boldsymbol{A}_j^\top \boldsymbol{y}) = 0, \quad \forall j = 1, \dots, n\]
+
+This implies that for each \(j\): * Either \(x_j = 0\) * Or the \(j\)-th dual constraint is active: \(\boldsymbol{A}_j^\top \boldsymbol{y} = \boldsymbol{c}_j\)
+
+\textbf{Complementary in Another Form:} Sometimes, we write the dual problem (equivalently) as:
+
+\[
+\begin{array}{l||l}
+\text{Primal} & \text{Dual} \\
+\hline \\
+\begin{aligned}
+\min \quad & \boldsymbol{c}^\top \boldsymbol{x} \\
+\text{s.t.} \quad & \boldsymbol{A} \boldsymbol{x} = \boldsymbol{b} \\
+& \boldsymbol{x} \geq \mathbf{0}
+\end{aligned} & 
+\begin{aligned}
+\max \quad & \boldsymbol{b}^\top \boldsymbol{y} \\
+\text{s.t.} \quad & \boldsymbol{A}^\top \boldsymbol{y} + \boldsymbol{s} = \boldsymbol{c} \\
+& \boldsymbol{s} \geq \mathbf{0}
+\end{aligned}
+\end{array}
+\]
+
+We call \(\boldsymbol{s}\) the dual slack variables. Then, the complementarity conditions can be written as: \[x_i \cdot s_i = 0, \quad \forall i = 1, \dots, n\]
+
+\textbf{In general:} Let \(\boldsymbol{x}\) and \(\boldsymbol{y}\) be feasible points of the primal and dual problems. Then \(\boldsymbol{x}\) and \(\boldsymbol{y}\) are optimal if and only if: * \(y_i (\boldsymbol{a}_i^\top \boldsymbol{x} - b_i) = 0, \quad \forall i\) * \(x_j (\boldsymbol{A}_j^\top \boldsymbol{y} - c_j) = 0, \quad \forall j\)
+
+\LectureSection{Lecture 12: Interpreting the Dual \& Sensitivity Analysis}
+
+\paragraph{1. Interpreting the Dual Problem}\label{interpreting-the-dual-problem}
+
+\begin{itemize}
+\tightlist
+\item
+  The production planning problem.
+\item
+  The multi-firm alliance problem.
+\item
+  The alternative systems problem.
+\end{itemize}
+
+\paragraph{2. Sensitivity Analysis}\label{sensitivity-analysis}
+
+How do the optimal solution and the optimal value change when the input (\(\boldsymbol{A}, \boldsymbol{b}, \boldsymbol{c}\)) changes?
+
+Consider the standard form LP: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} \leq \boldsymbol{b} \\
+& & & \boldsymbol{x} \geq 0
+\end{aligned}\] Denote the associated optimal value by \(V\).
+
+If \(\boldsymbol{A}\) and \(\boldsymbol{c}\) are fixed, \(V\) can be viewed as a function of \(\boldsymbol{b}\): \(V(\boldsymbol{b})\). \textbf{Theorem: Differentiability of the Optimal Value Function} If the dual has a unique optimal solution \(\boldsymbol{y}^*\), then \(\nabla_{\boldsymbol{b}} V(\boldsymbol{b}) = \boldsymbol{y}^*\).
+
+Similarly, if \(\boldsymbol{A}\) and \(\boldsymbol{b}\) are fixed, \(V\) can be viewed as a function of \(\boldsymbol{c}\): \(V(\boldsymbol{c})\).
+
+\textbf{Theorem: Differentiability of \(V(\boldsymbol{c})\)} If the primal has a unique optimal solution \(\boldsymbol{x}^*\), then \(\nabla_{\boldsymbol{c}} V(\boldsymbol{c}) = \boldsymbol{x}^*\).
+
+\ChapterPage{Chapter 2: Integer Programming}{\begin{itemize}
+  \item Lecture 14: Integer Optimization \& LP Relaxation
+  \item Lecture 15: Branch-and-Bound Method
+\end{itemize}}
+
+\LectureSection{Lecture 14: Integer Optimization \& LP Relaxation}
+
+\[\begin{aligned}
+& {\text{minimize}} & & \boldsymbol{c}^T \boldsymbol{x} \\
+& \text{subject to} & & \boldsymbol{A x} \geq \boldsymbol{b} \\
+& & & \boldsymbol{x} \in \mathbb{Z}^n
+\end{aligned}\]
+
+IP 的最优解未必靠近 LP 的最优解: - LP 松弛提供的是连续空间中的最优点； - IP 需要的是离散点集中的最优点； - 两者的几何结构本质不同，因此简单取整通常不可靠。
+
+\paragraph{1. LP Relaxation}\label{lp-relaxation}
+
+虽然 LP 松弛不一定能直接给出好整数解，但它仍然非常有用： 作为界。 - 对最大化问题，LP relaxation 的最优值 \(v^{LP}\) 是 IP 最优值 \(v^{IP}\) 的上界。 \[v^{LP} \geq v^{IP}\] - 对最小化问题，LP relaxation 的最优值 \(v^{LP}\) 是 IP 最优值 \(v^{IP}\) 的下界。 \[v^{LP} \leq v^{IP}\]
+
+因为 LP 松弛是``放宽约束'\,'：原来 IP 只能在整数点里选，现在 LP 可以在更大的连续集合里选。
+
+LP 与 IP 最优值之间的差距，叫做 Integrality gap: - 最大化问题：\(\text{gap} = v^{LP} - v^{IP}\) - 最小化问题：\(\text{gap} = v^{IP} - v^{LP}\)
+
+假设是最大化问题， - LP最优解是 \(v^{LP}\) - 把某个解round成可行整数解，此时目标值是 \(v^{Rounding}\) - 真正的数最优值是是 \(v^{IP}\) 有： \[ 0 \leq v^{IP} - v^{Rounding} \leq v^{LP} - v^{Rounding}\]
+
+因为虽然你不知道真正最优整数值 \(v^{IP}\)，但直到\(v^{LP}\)是上界，所以离整数最优解最多不会超过 \(v^{LP} - v^{Rounding}\)
+
+\textbf{如果 LP relaxation 的最优解恰好是整数，那么它一定也是原 IP 的最优解。}
+
+如果我们能保证所有 BFS 都是整数点， 那么 LP 一定存在整数最优解。（根据LP Fundamental Theorem，只要 LP 有最优解，就一定存在一个最优的 BFS）
+
+什么条件能保证一个 LP 的所有 BFS 都是整数？ \textbf{Total Unimodularity（全酉模性，TU）} 矩阵 \(A\) 是 totally unimodular，如果它的每一个子矩阵的行列式都只可能取 \(0, +1, -1\)。
+
+\textbf{If \(A\) is TU and \(b\) is an integer vector, then every BFS is integer.}
+
+判断TU的充分条件： 1. 每列至多有两个非零元素。 2. 每个元素都属于 \(\{0, +1, -1\}\)。 3. 行可以划分为两个不交集合 \(B\) 和 \(C\)，使得： - 如果某列有两个非零元素且符号相同，则它们必须在不同集合中。 - 如果某列有两个非零元素且符号相反，则它们必须在同一集合中。
+
+\LectureSection{Lecture 15: Branch-and-Bound Method}
+
+\paragraph{1. Branch-and-Bound Method}\label{branch-and-bound-method}
+
+若LP 松弛最优解为 \(\boldsymbol{x}^*\)，而其中某个变量 \(x_i^*\) 不是整数，则建立两个子问题： 1. \(x_i \leq \lfloor x_i^* \rfloor\) 2. \(x_i \geq \lceil x_i^* \rceil\)
+
+例如 \(x_i^* = 3.75\)，则建立两个子问题： 1. \(x_i \leq 3\) 2. \(x_i \geq 4\)
+
+对于子问题，继续解LP 松弛： - 如果某个子问题的 LP 最优解已经是整数，那么这个子问题就``解完了'\,'； - 如果仍然有分数变量，就继续分支； - 如果子问题不可行，就直接丢弃； - 如果这个子问题即使最优也不可能优于当前已知最好整数解，就也可以丢弃。
+
+反复进行，就形成一棵分支树（branching tree）。
+
+对于最大化问题： - 上界：LP relaxation 的最优值。 - 下界：任何已知的整数可行解的目标值。
+
+\paragraph{2. Pruning}\label{pruning}
+
+如果某个分支的 LP 松弛最优值已经不超过当前下界，那么这个分支就没必要继续算了。
+
+\ChapterPage{Chapter 3: Non-linear Programming}{\begin{itemize}
+  \item Lecture 16: Non-linear Optimization: Introduction
+  \item Lecture 17: Optimality Conditions for Unconstrained Problems
+  \item Lecture 18: Optimality Conditions for Constrianed Problems
+  \item Lecture 19: KKT Conditions
+  \item Lecture 20: More on KKT Conditions
+  \item Lecture 21: Convexity
+  \item Lecture 22: Convex Optimization
+  \item Lecture 23: Nonlinear Optimization Algorithms
+  \item Lecture 24: Nonlinear Optimization Algorithms (Cont'd)
+\end{itemize}}
+
+\LectureSection{Lecture 16: Non-linear Optimization: Introduction}
+
+\[\begin{aligned}
+& \underset{\boldsymbol{x}}{\text{minimize}} & & f(\boldsymbol{x}) \\
+& \text{subject to} & & x \in \Omega
+\end{aligned}\]
+
+\paragraph{1. First-Order Necessary Conditions (FONC)}\label{first-order-necessary-conditions-fonc}
+
+如果 \(\boldsymbol{x}^*\) 是一个局部最优解，并且 \(f\) 在 \(\boldsymbol{x}^*\) 处可微，那么： \[\nabla f(x^*) = 0\]
+
+满足 FONC 的点叫做\textbf{驻点}（stationary point）。驻点可能是局部最优解，也可能是局部最差解，或者是一个鞍点。
+
+所以，FONC 是局部最优解的必要条件，但不是充分条件。
+
+\LectureSection{Lecture 17: Optimality Conditions for Unconstrained Problems}
+
+Recall: 如果 \(\boldsymbol{x}^*\) 是一个局部最优解，那么： \[\nabla f(\boldsymbol{x}^*) = 0\]
+
+满足这个条件的点叫做\textbf{驻点}（stationary point）。驻点可能是局部最优解，也可能是局部最差解，或者是一个鞍点。
+
+\paragraph{1. Second-Order Necessary Conditions (SONC)}\label{second-order-necessary-conditions-sonc}
+
+如果 $\boldsymbol{x}^*$ 是一个局部最小值：
+\begin{enumerate}
+\item $\nabla f(\boldsymbol{x}^*) = 0$;
+\item For all $\boldsymbol{d} \in \mathbb{R}^n$, $\boldsymbol{d}^T \nabla^2 f(\boldsymbol{x}^*) \boldsymbol{d} \geq 0$, i.e. $\nabla^2 f(\boldsymbol{x}^*)$ 半正定
+\end{enumerate}
+
+\textbf{Def: Positive Semi-definiteness (PSD)} A symmetric matrix \(A\) is positive semi-definite iff for all \(\boldsymbol{d} \in \mathbb{R}^n\), \(\boldsymbol{d}^T A \boldsymbol{d} \geq 0\).
+
+SONC requires the Hessian matrix \(\nabla^2 f(\boldsymbol{x}^*)\) to be PSD, in 1D, this is equivalent to \(f''(x^*) \geq 0\).
+
+\textbf{SONC依然是必要条件。}
+
+反例为\(f(x) = x^3\)在\(x=0\)处满足SONC，但不是局部最小值。
+
+\paragraph{2. Some Useful Facts about PSD Matrices}\label{some-useful-facts-about-psd-matrices}
+
+\begin{itemize}
+\tightlist
+\item
+  通常只对对称矩阵讨论PSD。（如果\(A\)不对称，用\(\frac{1}{2}(A + A^T)\)代替，即\(x^T A x = x^T \frac{1}{2}(A + A^T) x\)）
+\item
+  一个对称矩阵PSD iff 它的所有特征值都非负。
+\item
+  对于所有矩阵\(A\)，\(A^T A\)都是PSD。
+\end{itemize}
+
+\paragraph{3. Second-Order Sufficient Conditions (SOSC)}\label{second-order-sufficient-conditions-sosc}
+
+如果$\boldsymbol{x}^*$满足：
+\begin{enumerate}
+\item $\nabla f(\boldsymbol{x}^*) = 0$;
+\item For all $\boldsymbol{d} \neq \mathbf{0}$, $\boldsymbol{d}^T \nabla^2 f(\boldsymbol{x}^*) \boldsymbol{d} > 0$, i.e. $\nabla^2 f(\boldsymbol{x}^*)$ is positive definite (PD).
+\end{enumerate}
+那么$\boldsymbol{x}^*$是一个局部最小值。
+
+因为是充分条件------不是所有局部最小值都满足SOSC！
+
+\textbf{总结}
+
+对于极小值：
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+类型 & 条件 \\
+\midrule
+最小值 FONC & $\nabla f = 0$ \\
+SONC & Hessian $\geq 0$ \\
+SOSC & Hessian $> 0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+对于极大值：
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+类型 & 条件 \\
+\midrule
+最大值 FONC & $\nabla f = 0$ \\
+SONC & Hessian $\leq 0$ \\
+SOSC & Hessian $< 0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{4. Saddle Point}\label{saddle-point}
+
+如果$\boldsymbol{x}^*$满足：
+\begin{enumerate}
+\item $\nabla f(\boldsymbol{x}^*) = 0$;
+\item For some $\boldsymbol{d}$, $\boldsymbol{d}^T \nabla^2 f(\boldsymbol{x}^*) \boldsymbol{d} < 0$; and for some $\boldsymbol{d}'$, $\boldsymbol{d}'^T \nabla^2 f(\boldsymbol{x}^*) \boldsymbol{d}' > 0$.
+\end{enumerate}
+那么$\boldsymbol{x}^*$是一个鞍点。
+
+\paragraph{5. 整体解题策略}\label{ux6574ux4f53ux89e3ux9898ux7b56ux7565}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  求梯度 \[\nabla f(\boldsymbol{x}) = \mathbf{0}\] 找到所有候选点
+\item
+  求Hessian
+\[
+\nabla^2 f(\boldsymbol{x})
+\]
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Hessian & 结论 \\
+\midrule
+PD & 严格局部最小 \\
+ND & 严格局部最大 \\
+不定 & 鞍点 \\
+PSD & 不确定 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\item
+  特殊情况
+
+  \begin{itemize}
+  \tightlist
+  \item
+    如果函数是凸函数，那么满足FONC的点一定是全局最小值。
+  \item
+    如果只有一个stationary point，那么它往往是全局最优解。
+  \end{itemize}
+\end{enumerate}
+
+\LectureSection{Lecture 18: Optimality Conditions for Constrianed Problems}
+
+\paragraph{1. Abstract FONC for Constrained Problems}\label{abstract-fonc-for-constrained-problems}
+
+约束优化里，最优性不是看\texttt{所有方向\textquotesingle{}\textquotesingle{}能不能下降，而是看}所有可行方向'\,'能不能下降。（如边界点。虽然不满足FONC，但仍可能是局部最优解）
+
+\textbf{Feasible Direction} 给定可行点\(x \in \Omega\)，如果存在某个\(\bar{t} > 0\)，使得\(\forall t \in [0, \bar{t}]\)，有\(x + t d \in \Omega\)，则称\(d\)为在点\(x\)处的可行方向。
+
+\textbf{FONC for Constrained Problems} 如果\(x^*\)是约束优化问题的局部最小值，那么对于所有在\(x^*\)处的可行方向\(d\)，都有\(\nabla f(x^*)^T d \geq 0\)。
+
+\textbf{Descent Direction} 如果\(\nabla f(x^*)^T d < 0\)，则称\(d\)为在\(x^*\)处的下降方向。
+
+记在\(x\)处的可行方向集为\(S_{\Omega}(x)\)，下降方向集为\(S_{D}(x)\)，则FONC可以重新表述为： \[S_{\Omega}(x^*) \cap S_{D}(x^*) = \emptyset\]
+
+约束问题的一阶必要条件可以重新说成一句非常直观的话------\textbf{局部极小点处，不存在可行下降方向。}
+
+\paragraph{2. FONC for Linearly Constrained Non-linear Problems}\label{fonc-for-linearly-constrained-non-linear-problems}
+
+Consider a linearly constrained problem: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & f(\boldsymbol{x}) \\
+& \text{subject to} & & \boldsymbol{A x} \geq \boldsymbol{b} \\
+\end{aligned}\]
+
+\textbf{FONC for Linearly Constrained Problems} 如果\(\boldsymbol{x}^*\)是一个局部最小值，那么存在一些\(y \in \mathbb{R}^m_+\)使得： \[\nabla f(\boldsymbol{x}^*) - \boldsymbol{A}^T \boldsymbol{y} = 0\\
+y_i (a_i^T \boldsymbol{x}^* - b_i) = 0, \quad i = 1, \ldots, m\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  第一个条件：\textbf{stationarity} 目标函数的梯度可以表示成活跃约束法向量的非负线性组合。也就是说，目标函数想继续下降的趋势，被约束边界``顶住了'\,'。
+\item
+  第二个条件：\textbf{complementary slackness} 如果第\(i\)个约束不活跃（即\(a_i^T \boldsymbol{x}^* > b_i\)），则对应的\(y_i\)必须为0；如果\(y_i > 0\)，则第\(i\)个约束必须活跃（即\(a_i^T \boldsymbol{x}^* = b_i\)）。
+\end{enumerate}
+
+\textbf{Corollary: FONC for Linear Equality Constraints} \[\text{min} \quad f(\boldsymbol{x}) \quad \text{s.t.} \quad \boldsymbol{A x} = \boldsymbol{b}\] 如果\(\boldsymbol{x}^*\)是一个局部最小值，那么存在一些\(\boldsymbol{y} \in \mathbb{R}^m\)使得： \[\nabla f(\boldsymbol{x}^*) - \boldsymbol{A}^T \boldsymbol{y} = 0\]
+
+\LectureSection{Lecture 19: KKT Conditions}
+
+\paragraph{1. General Inequality Constraints}\label{general-inequality-constraints}
+
+Consider the nonlinear program: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & f(\boldsymbol{x}) \\
+& \text{subject to} & & g_i(\boldsymbol{x}) \leq 0, \quad i = 1, \ldots, m \\
+\end{aligned}\]
+
+\textbf{No Feasible Descent} 如果\(\boldsymbol{x}^*\)是一个局部最小值，那么不存在一个向量\(\boldsymbol{d}\)使得： 1. \(\nabla f(\boldsymbol{x}^*)^T \boldsymbol{d} < 0\); and 2. \(\nabla g_i(\boldsymbol{x}^*)^T \boldsymbol{d} \leq 0, \forall i \in A(\boldsymbol{x}^*)\). 其中\(A(\boldsymbol{x}^*) = \{i: g_i(\boldsymbol{x}^*) = 0\}\)是\(\boldsymbol{x}^*\)处的活跃约束集合。
+
+\textbf{Firtz-John (FJ) Conditions} 如果\(\boldsymbol{x}^*\)是一个局部最小值，那么存在一些\(\lambda_0 \geq 0\)和\(\lambda_1, \ldots, \lambda_m \geq 0\)不全为0，使得： \[\lambda_0 \nabla f(\boldsymbol{x}^*) + \sum_{i=1}^m \lambda_i \nabla g_i(\boldsymbol{x}^*) = 0\\
+\lambda_i g_i(\boldsymbol{x}^*) = 0, \quad i = 1, \ldots, m\]
+
+缺点：允许\(\lambda_0 = 0\)，此时条件就变得很弱了。
+
+\textbf{Karush-Kuhn-Tucker (KKT) Conditions} 若果\(\boldsymbol{x}^*\)是 \[\text{min} \quad f(\boldsymbol{x}) \quad \text{s.t.} \quad g_i(\boldsymbol{x}) \leq 0, i = 1, \ldots, m\] 的局部最小值，且活跃约束的梯度 \[\{\nabla g_i(\boldsymbol{x}^*) : i \in A(\boldsymbol{x}^*)\}\] 线性无关，那么存在\(\lambda_i \geq 0\)使得： \[\nabla f(\boldsymbol{x}^*) + \sum_{i=1}^m \lambda_i \nabla g_i(\boldsymbol{x}^*) = 0\\
+\lambda_i g_i(\boldsymbol{x}^*) = 0, \quad i = 1, \ldots, m\]
+
+\paragraph{2. General Equality and Inequality Constraints}\label{general-equality-and-inequality-constraints}
+
+Consider the nonlinear program: \[\begin{aligned}
+& \underset{\boldsymbol{x} \in \mathbb{R}^n}{\text{minimize}} & & f(\boldsymbol{x}) \\
+& \text{subject to} & & g_i(\boldsymbol{x}) \leq 0, \quad i = 1, \ldots, m \\
+& & & h_j(\boldsymbol{x}) = 0, \quad j = 1, \ldots, p
+\end{aligned}\]
+
+\texttt{STEP\ 1:\ Lagrangian} - 对每个不等式约束\(g_i(\boldsymbol{x}) \leq 0\)，引入一个拉格朗日乘子\(\lambda_i \geq 0\); - 对每个等式约束\(h_j(\boldsymbol{x}) = 0\)，引入一个拉格朗日乘子\(\mu_j\)（没有非负限制）; 定义拉格朗日函数： \[L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\mu}) = f(\boldsymbol{x}) + \sum_{i=1}^m \lambda_i g_i(\boldsymbol{x}) + \sum_{j=1}^p \mu_j h_j(\boldsymbol{x})\]
+
+\texttt{STEP\ 2:\ KKT\ Conditions} 1. Main KKT Conditions/Stationarity：目标梯度被约束梯度抵消 \[\nabla_x L(x,\lambda,\mu) = \nabla f(x) + \sum_{i=1}^m \lambda_i \nabla g_i(x) + \sum_{j=1}^p \mu_j \nabla h_j(x) = 0\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  Dual Feasibility：不等式乘子非负（作为惩罚项） \[\lambda_i \geq 0, \quad i = 1, \ldots, m\]
+\item
+  Complementarity Conditions：只有活跃约束才可能有影响 \[\lambda_i g_i(x) = 0, \quad i = 1, \ldots, m\]
+\item
+  Primal Feasibility：原问题必须可行 \[g_i(x) \leq 0, \quad i = 1, \ldots, m\\
+  h_j(x) = 0, \quad j = 1, \ldots, p\]
+\end{enumerate}
+
+\paragraph{3. Constraint Qualification}\label{constraint-qualification}
+
+KKT条件的必要性依赖于一个重要的前提------\textbf{约束资格（constraint qualification, CQ）}。 最常用的CQ是\textbf{线性独立约束资格（LICQ）}，即所有活跃约束的梯度向量线性无关。 \[\{\nabla g_i(x^*) : i \in A(x^*)\} \cup \{\nabla h_j(x^*) : j = 1, \ldots, p\}\] 线性无关。
+
+\LectureSection{Lecture 20: More on KKT Conditions}
+
+\begin{itemize}
+\tightlist
+\item
+  KKT conditions is first-order necessary conditions (FONC) for general constrained optimization problems.
+\item
+  KKT 点只是候选最优点，不保证真最优
+\item
+  如果 LICQ 成立，乘子唯一
+\end{itemize}
+
+\paragraph{1. 应用KKT的流程}\label{ux5e94ux7528kktux7684ux6d41ux7a0b}
+
+\texttt{STEP\ 1：} 检查LICQ \texttt{STEP\ 2：} 写出KKT条件 \texttt{STEP\ 3：} 从互补条件入手分析，找到KKT点
+
+补充： - 若 CQ 成立，则全局最优解一定是 KKT 点 - 若 CQ 成立且 KKT 点唯一，则该点必为全局最优 - 若问题是凸优化，则 KKT 条件会更强（必要且充分）
+
+\LectureSection{Lecture 21: Convexity}
+
+\paragraph{Recap: Applying KKT}\label{recap-applying-kkt}
+
+General Strategy: - Check LICQ - Derive KKT conditions - Start by Complementary Slackness then find KKT points
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Unconstrained
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Constrained
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FONC: \(x^*\) local min (+CQ) \(\implies \nabla f(x^*) = 0\) & KKT conditions \\
+SONC: \(x^*\) local min (+CQ) \(\implies \nabla^2 f(x^*)\) is PSD & ? \\
+SOSC: \(x^*\) local min (+CQ) \(\implies \nabla^2 f(x^*)\) is PD & ? \\
+\end{longtable}
+
+\paragraph{Convexity}\label{convexity}
+
+Def:
+\begin{itemize}
+\item Convex set
+\begin{quote}
+A set $\Omega \subseteq \mathbb{R}^n$ is convex if for any $x, y \in \Omega$ and $\lambda \in [0, 1]$, we have $\lambda x + (1 - \lambda) y \in \Omega$.
+\end{quote}
+\item Convex conbination
+\begin{quote}
+For any $x_1, ..., x_n$ and $\lambda_1, ..., \lambda_n \geq 0$ such that $\sum_{i=1}^n \lambda_i = 1$, we have $\sum_{i=1}^n \lambda_i x_i$ is a convex combination of $x_1, ..., x_n$.
+\end{quote}
+\item Convex function
+\begin{quote}
+A function $f: \Omega \to \mathbb{R}$ is convex if for any $x, y \in \Omega$ and $\lambda \in [0, 1]$, we have $f(\lambda x + (1 - \lambda) y) \leq \lambda f(x) + (1 - \lambda) f(y)$.
+\end{quote}
+\item Concave function
+\begin{quote}
+A function $f: \Omega \to \mathbb{R}$ is concave if for any $x, y \in \Omega$ and $\lambda \in [0, 1]$, we have $f(\lambda x + (1 - \lambda) y) \geq \lambda f(x) + (1 - \lambda) f(y)$.
+\end{quote}
+\end{itemize}
+
+\paragraph{Characterization of Convexity}\label{characterization-of-convexity}
+
+\begin{itemize}
+\item
+  Convexity by Hessian \textgreater{} If \(f\) is twice differentiable, then \(f\) is convex iff its Hessian is PSD, i.e., \(d^T \nabla^2 f(x) d \geq 0\) for all \(x\) and \(d\).
+\item
+  Lemmas \textgreater{} Sum Rule \textgreater{} If \(a_1, ..., a_n \geq 0\) and \(f_1, ..., f_n\) are convex, then \(f = \sum_{i=1}^n a_i f_i\) is convex. \textgreater{} \textgreater{} Composition Rule \textgreater{} If \(g\) is convex and \(A \in \mathbb{R}^{m \times n}, b \in \mathbb{R}^m\), then \(f(x) = g(Ax + b)\) is convex. \textgreater{} \textgreater{} Pointwise maximum \textgreater{} If \(f_i\) are convex for \(i = 1, ..., n\), then \(f(x) = \max_{i=1,...,n} f_i(x)\) is convex. \textgreater{} Pointwise Minimum \textgreater{} If \(f_i\) are concave for \(i = 1, ..., n\), then \(f(x) = \min_{i=1,...,n} f_i(x)\) is concave.
+\end{itemize}
+
+\LectureSection{Lecture 22: Convex Optimization}
+
+以下两类问题都叫凸优化： - 在凸可行域上最小化凸函数 - 在凸可行域上最大化凹函数
+
+\textbf{凸性：局部最优 = 全局最优}
+
+Proof: 反证法。 设 \(x^*\) 是局部最优解，但不是全局最优解，则存在 \(y\) 使得 \(f(y) < f(x^*)\)。 由于 \(f\) 是凸函数，我们有： \[f(\lambda x^* + (1 - \lambda) y) \leq \lambda f(x^*) + (1 - \lambda) f(y) < f(x^*)\] 这说明在\(x^*\) 附近存在更小的点，与 \(x^*\) 是局部最优解矛盾。
+
+\paragraph{1. Stationarity and Global Optimality}\label{stationarity-and-global-optimality}
+
+Consider the constrained optimization problem: \[\begin{aligned}
+\min_{x} & \quad f(x) \\
+\text{s.t.} & \quad g_i(x) \leq 0, \quad i = 1, ..., m \\
+& \quad h_j(x) = 0, \quad j = 1, ..., p
+\end{aligned}\]
+
+其中 - \(f\) 是凸函数 - \(g_i\) 是凸函数 - \(h_j\) 是线性函数
+
+那么任何 KKT 点都是全局最优解。
+
+\textbf{注意：}在凸优化里，只要\(f\)和\(\Omega\)满足凸性条件，KKT点就一定存在且全局最优，不再依赖于CQ。
+
+\paragraph{2. Convex Constraints}\label{convex-constraints}
+
+如何判断约束是否构成凸集？
+
+\textbf{Lemma：} Let \(g\) be a convex function. Then, for any \(c\), the region \(\Omega = \{x : g(x) \leq c\}\) is a convex set. In this case, we say that \(g(x) \leq c\) is a convex constraint.
+
+\begin{itemize}
+\tightlist
+\item
+  \(g(x) \leq 0\) and \(g\) convex \(\Rightarrow g\) convex constraint
+\item
+  \(g(x) \geq 0\) and \(g\) concave \(\Rightarrow g\) convex constraint
+\item
+  Linear constraint is convex constraint
+\item
+  一个约束即使看起来不属于上面标准形式，它定义出来的集合仍然可能是凸集。
+\end{itemize}
+
+也就是说，上述判定法是充分条件，不是必要条件。
+
+\paragraph{3. Hidden Convexity}\label{hidden-convexity}
+
+有时目标函数或约束的凸性不是直接写在表面上的，需要经过变换或重新理解可行域.
+
+e.g.~ \[\begin{aligned}
+\max_{x,y,z} & \quad xyz \\
+\text{s.t.} & \quad x+2y+3z \leq 3 \\
+& \quad x, y, z \geq 0
+\end{aligned}\]
+
+xyz not concave，但可以通过对数变换得到一个凸优化问题： \[\begin{aligned}
+\max_{x,y,z} & \quad \log(xyz) = \log x + \log y + \log z \\
+\text{s.t.} & \quad x+2y+3z \leq 3 \\
+& \quad x, y, z \geq 0
+\end{aligned}\]
+
+\LectureSection{Lecture 23: Nonlinear Optimization Algorithms}
+
+Start with an unconstrained optimization problem: \[\min_{x} f(x)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Bisection method
+\item
+  GD Method
+\item
+  Newton's method
+\end{itemize}
+
+\textbf{Def: Convergence} \(\{x^k\}\) converges to \(x^*\) iff for every \(\epsilon > 0\), there exists a positive integer \(K\) s.t. \(||x^k - x^*||_2 < \epsilon\) for all \(k \geq K\).
+
+\paragraph{1. 一维无约束优化}\label{ux4e00ux7ef4ux65e0ux7ea6ux675fux4f18ux5316}
+
+\(f: \mathbb{R} \to \mathbb{R}\) 二分法（Bisection method）： 局部最小点满足：\(g(x) = f'(x) = 0\)，即找导函数的零点。这时问题变成了一个 root-finding problem，可以用二分法来求解。
+
+假设能找到两个点 \(x_l\) 和 \(x_r\) 使得 \(g(x_l) < 0\) 且 \(g(x_r) > 0\)，则根据连续性，存在 \(x^* \in (x_l, x_r)\) 使得 \(g(x^*) = 0\)。二分法的核心思想是不断缩小区间 \((x_l, x_r)\) 来逼近 \(x^*\)。
+
+定义中点 \(x_m = \frac{x_l + x_r}{2}\)： - 情况1：如果 \(g(x_m) = 0\)，则 \(x_m\) 就是我们要找的点。 - 情况2：如果 \(g(x_m) < 0\)，说明零点在区间 \((x_m, x_r)\) 内，因此我们将 \(x_l\) 更新为 \(x_m\)。 - 情况3：如果 \(g(x_m) > 0\)，说明零点在区间 \((x_l, x_m)\) 内，因此我们将 \(x_r\) 更新为 \(x_m\)。
+
+重复此过程，直到 \(|x_r - x_l| < \epsilon\) or \(|g(x_m)| < \epsilon\)，此时 \(x_m\) 就是一个近似的局部最小点。
+
+为了得到一个\(\epsilon\)-近似的局部最小点，最多需要 \(\lceil \log_2\left(\frac{b - a}{\epsilon}\right) \rceil\) 次迭代，其中 \([a, b]\) 是初始区间。
+
+通过对 \(f'\) 是用二分法，我们可以找到一个近似stationary point。当\(f\) 是凸函数时，这个stationary point也是全局最优解。
+
+\paragraph{2. Higher-dimensional Unconstrained Optimization}\label{higher-dimensional-unconstrained-optimization}
+
+\[x^{k+1} = x^k + \alpha_k d^k\] 其中 \(d^k\) 是一个 descent direction，\(\alpha_k\) 是 step size。
+
+每一步包含两个核心问题： - 往哪个方向走？ - 走多远？
+
+GD method: \[d^k = -\nabla f(x^k)\\
+x^{k+1} = x^k - \alpha_k \nabla f(x^k)\] Stopping criterion: \(||\nabla f(x^k)||_2 < \epsilon\).
+
+Step size \(\alpha_k\) 的选取： - 固定步长：\(\alpha_k = \alpha\) （简单，便宜，但太大会震荡，太小会收敛慢） - 精确线搜索：\(\alpha_k = \arg\min_{\alpha > 0} f(x^k - \alpha \nabla f(x^k))\) （每步都找到最优步长，但计算代价大）
+
+【例】\(f(x) = b^T x + \frac{1}{2} x^T A x\)，其中 \(A\) 是 PSD 矩阵。 梯度：\(\nabla f(x) = b + A x\) 在\(x^k\) 处的梯度下降方向：\(d^k = -\nabla f(x^k) = -b - A x^k\) 沿着这个方向的函数值： \[\begin{aligned}
+f(x^k + \alpha d^k) &= b^T (x^k + \alpha d^k) + \frac{1}{2} (x^k + \alpha d^k)^T A (x^k + \alpha d^k) \\
+&= f(x^k) + \alpha \nabla f(x^k)^T d^k + \frac{1}{2} \alpha^2 d^{kT} A d^k
+\end{aligned}\] 因为 \(A\) 正定，所以 \(d^{kT} A d^k > 0\)，因此 \(f(x^k + \alpha d^k)\) 是 \(\alpha\) 的二次函数。 通过求导可以找到最优的 \(\alpha_k\)： \[\alpha_k = -\frac{\nabla f(x^k)^T d^k}{(d^{k})^T A d^k}\]
+
+\LectureSection{Lecture 24: Nonlinear Optimization Algorithms (Cont'd)}
+
+\paragraph{1. Armijo Line Search}\label{armijo-line-search}
+
+除了Exact Line Search，还有其他的 step size 选取方法： \textbf{Backtracking Line Search/Armijo Line Search} 背景：已经找到下降方向 \(d^k\)，但不知道合适的步长 \(\alpha_k\)。 给定参数 \(\sigma, \gamma \in (0, 1)\)，从候选步长集合中选择最大的可接受步长： \[\{1, \sigma, \sigma^2, \sigma^3, ...\}\] 使得： \[f(x^k + \alpha_k d^k) - f(x^k) \leq \gamma \alpha_k \nabla f(x^k)^T d^k\]
+
+Armijo condition 的意义：要下降的足够多。 1. 从 \(\alpha = 1\) 开始 2. 检查 \(f(x^k + \alpha d^k) - f(x^k) \leq \gamma \alpha \nabla f(x^k)^T d^k\) - 如果满足：接受 \(\alpha\) 作为步长 - 如果不满足：将 \(\alpha\) 更新为 \(\sigma \alpha\)，继续检查，直到满足条件
+
+\paragraph{2. Convergence of GD}\label{convergence-of-gd}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Lipschitz Continuous Gradient 如果存在 \(L > 0\) 使得： \[||\nabla f(x) - \nabla f(y)||_2 \leq L ||x - y||_2, \quad \forall x, y\] 则称 \(f\) 的梯度是 Lipschitz continuous 的，\(L\) 是 Lipschitz constant。 记作 \(f \in C^{1,1}_L\)。 L 控制梯度变化的有多快，L越大，函数曲率可能越大，梯度变化越剧烈，因此步长的选取需要更谨慎（通常更小）。
+\end{enumerate}
+
+【例】\(f(x) = \frac{1}{2} x^T A x + b^T x + c\)。 梯度：\(\nabla f(x) = A x + b\)。 所以： \[||\nabla f(x) - \nabla f(y)|| = ||A x + b - (A y + b)|| = ||A (x - y)|| \leq ||A||_{op} ||x - y||\] 因此，Lipschitz constant 可以取 \(L = ||A||_{op}\)。 其中 \(||A||_{op}\) 是矩阵 \(A\) 的 operator norm，定义为： \[||A||_{op} = \sqrt{\lambda_{\max}(A^T A)} = max_{||d||=1} ||A d||\] 对于对称正定矩阵 \(A\)，\(||A||_{op}\) 等于 \(A\) 的最大特征值 \(\lambda_{\max}(A)\)。
+
+\textbf{Theorem: Lipschitz Continuity via Hessians} 如果 \(f\) 二阶连续可微，则以下条件等价： - \(f \in C^{1,1}_L\) - \(||\nabla^2 f(x)||_{op} \leq L\) for all \(x\)
+
+\textbf{Descent Lemma} 如果 \(f \in C^{1,1}_L\)，则对于任意 \(x, y\)，有： \[f(y) \leq f(x) + \nabla f(x)^T (y - x) + \frac{L}{2} ||y - x||^2\]
+
+令 \(y = x^{k+1} = x^k - \bar{\alpha} \nabla f(x^k)\)，那么： \[y - x^k = -\bar{\alpha} \nabla f(x^k)\] 代入 Descent Lemma： \[f(x^{k+1}) \leq f(x^k) - \bar{\alpha} \|\nabla f(x^k)\|^2 + \frac{L}{2} \bar{\alpha}^2 \|\nabla f(x^k)\|^2\] 整理得： \[f(x^{k+1}) \leq f(x^k) - \left(\bar{\alpha} - \frac{L}{2} \bar{\alpha}^2\right) \|\nabla f(x^k)\|^2\] 为了保证 \(f(x^{k+1}) < f(x^k)\)，需要满足： \[\bar{\alpha} - \frac{L}{2} \bar{\alpha}^2 > 0\] 解这个不等式，得到： \[0 < \bar{\alpha} < \frac{2}{L}\]
+
+\textbf{结论：}对于Lipschitz continuous gradient的函数，选择步长 \(\bar{\alpha} \in (0, \frac{2}{L})\) 可以保证每一步梯度下降都会使函数值降低。
+
+\textbf{Linear Convergence} 如果存在 \(\eta \in (0, 1)\) 和 \(\ell \geq 0\) 使得： \[||x^{k+1} - x^*|| \leq \eta ||x^k - x^*||, \quad \forall k \geq \ell\] 则称 \(\{x^k\}\) 线性收敛到 \(x^*\)，收敛率为 \(\eta\)。
+
+\textbf{Strong Convexity} 假设 \(f\) 有 L-Lipschitz continuous gradient，并且存在 \(\mu > 0\) 使得： \[\mu ||d||^2 \leq d^T \nabla^2 f(x) d \leq L ||d||^2, \quad \forall x, d\] 则称 \(f\) 是 \(\mu\)-strongly convex 的。 此时，问题有唯一解 \(x^*\)，并且 GD method 以线性速率收敛到 \(x^*\)，收敛率为 \(\eta = 1 - 2M\mu\)，不同的线搜索方法会有不同的 \(M\)。 函数值满足： \[f(x^{k+1}) - f(x^*) \leq \eta (f(x^k) - f(x^*))\] - 固定步长：\(M = \bar{\alpha} (1 - \frac{L \bar{\alpha}}{2})\). - 精确线搜索：\(M = \frac{1}{L}\). - Armijo line search: \(M = \gamma \min\{1, \frac{2\sigma (1 - \gamma)}{L}\}\). - 最优固定步长：\(\bar{\alpha}= 1/L\),或者用 exact line search时，可以得到较优的收敛率 \(\eta = 1 - \frac{\mu}{L}\).
+
+定义条件数：\(\kappa = \frac{L}{\mu}\)，则收敛率可以写成 \(\eta = 1 - \frac{1}{\kappa}\). 说明条件数越大，收敛率越慢。
+
+距离误差的预测 rate 为 \(\bar{\eta} = \frac{\kappa - 1}{\kappa + 1}\)，当 \(\kappa\) 很大时，\(\bar{\eta} \approx 1 - \frac{2}{\kappa}\)，比函数值的预测 rate 更快。
+
+\end{document}

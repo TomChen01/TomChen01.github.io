@@ -7,7 +7,51 @@ interface Props {
   description?: string;
 }
 
-const { title = "Hongyi (Tom) Chen", description = "Hongyi (Tom) Chen - Portfolio" } = Astro.props;
+const {
+  title = "Hongyi (Tom) Chen | AI, Data Science, and Human-AI Interaction",
+  description = "Hongyi (Tom) Chen is a data science undergraduate focused on artificial intelligence, machine learning, large language models, and human-AI interaction.",
+} = Astro.props;
+
+const siteUrl = 'https://tomchen01.github.io';
+const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const profileStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': `${siteUrl}/#profile`,
+  url: pageUrl,
+  name: title,
+  description,
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${siteUrl}/#person`,
+    name: 'Hongyi Chen',
+    alternateName: 'Tom Chen',
+    url: siteUrl,
+    image: `${siteUrl}/me1.jpg`,
+    email: 'mailto:tomchen0417@gmail.com',
+    sameAs: [
+      'https://github.com/TomChen01',
+      'https://linkedin.com/in/tomchen17',
+    ],
+    affiliation: [
+      {
+        '@type': 'CollegeOrUniversity',
+        name: 'The Chinese University of Hong Kong, Shenzhen',
+      },
+      {
+        '@type': 'CollegeOrUniversity',
+        name: 'University of California, Berkeley',
+      },
+    ],
+    knowsAbout: [
+      'Artificial Intelligence',
+      'Machine Learning',
+      'Large Language Models',
+      'Data Science',
+      'Human-AI Interaction',
+    ],
+  },
+};
 ---
 <html lang="en">
   <head>
@@ -17,6 +61,7 @@ const { title = "Hongyi (Tom) Chen", description = "Hongyi (Tom) Chen - Portfoli
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(profileStructuredData)} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">

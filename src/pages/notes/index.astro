@@ -3,7 +3,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const allNotes = await getCollection('notes');
-const sortedNotes = allNotes.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const getTermYear = (title: string) => {
+  const match = title.match(/\((\d{2})\s/);
+
+  return match ? Number(match[1]) : 0;
+};
+
+const sortedNotes = allNotes.sort((a, b) => {
+  const yearDiff = getTermYear(b.data.title) - getTermYear(a.data.title);
+  if (yearDiff !== 0) return yearDiff;
+
+  return a.data.title.localeCompare(b.data.title);
+});
 
 const dateFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
@@ -12,7 +23,10 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 });
 ---
 
-<BaseLayout title="Notes | Hongyi (Tom) Chen" description="Thoughts on AI, Engineering, and Life.">
+<BaseLayout
+  title="Notes | Hongyi (Tom) Chen"
+  description="Course notes and technical notes by Hongyi (Tom) Chen on machine learning, AI, optimization, stochastic processes, and deep neural networks."
+>
   <div class="max-w-3xl mx-auto space-y-12">
     <div class="border-b border-gray-100 pb-8">
       <h1 class="text-4xl font-bold text-gray-900 mb-4">Notes</h1>
@@ -24,7 +38,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
     <div class="space-y-8">
       {sortedNotes.map((note) => (
         <article class="group">
-            <a href={`/notes/${note.slug}`} class="block space-y-2">
+            <a href={`/notes/${note.id}`} class="block space-y-2">
                 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                     <h2 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                         {note.data.title}
