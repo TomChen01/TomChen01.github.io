@@ -8,14 +8,14 @@ const projects = (await getCollection('projects')).sort(
 ---
 
 <BaseLayout
-	title="Projects | Hongyi (Tom) Chen"
+	title="Hongyi (Tom) Chen | Projects"
 	description="AI, machine learning, data science, and product engineering projects by Hongyi (Tom) Chen."
 >
 	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 		<header class="mb-12 text-center md:text-left">
 			<h1 class="text-4xl font-bold tracking-tight text-gray-900 mb-4">Projects</h1>
 			<p class="text-xl text-gray-600 max-w-2xl">
-				Here are some of the projects I have currently completed.
+				Selected projects in model editing, quantitative forecasting, and on-device AI.
 			</p>
 		</header>
 
@@ -40,7 +40,7 @@ const projects = (await getCollection('projects')).sort(
 						
 						<!-- Content -->
 						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="text-lg font-bold text-gray-900 mb-2 truncate group-hover:text-blue-600 transition-colors">
+							<h3 class="text-lg font-bold text-gray-900 mb-2 min-h-14 line-clamp-2 group-hover:text-blue-600 transition-colors">
 								{project.data.title}
 							</h3>
 							<p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">

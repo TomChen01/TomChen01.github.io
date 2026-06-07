@@ -3,19 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const skills = [
   {
-    category: "Core AI & Data",
-    // 只有最硬核的库：PyTorch 代表深度学习，Transformers 代表 LLM，Pandas 代表数据处理
-    items: ["Python", "PyTorch", "Transformers", "Pandas", "SQL"]
+    category: "Programming & Web",
+    items: ["Python", "R", "SQL", "Java", "C", "JavaScript", "HTML/CSS", "LaTeX", "Git"]
   },
   {
-    category: "Product Engineering",
-    // 只有现代全栈的标准配置：TS 和 React
-    items: ["JavaScript/TypeScript", "React", "Tailwind CSS", "Git", "Linux/Bash"]
-  },
-  {
-    category: "Systems & Academic",
-    // C 代表底层理解(CS61C)，LaTeX 代表学术规范
-    items: ["C","RISC-V", "LaTeX"]
+    category: "Machine Learning & Data",
+    items: ["PyTorch", "Scikit-learn", "Transformers", "Pandas", "NumPy", "Tableau"]
   }
 ];
 
@@ -24,10 +17,22 @@ const experience = [
     category: "Research",
     items: [
       {
-        role: "Undergraduate Researcher",
-        organization: "Course Project (Advisor: Prof. Sahai @ UC Berkeley)",
+        role: "Undergraduate Researcher: EHRFormer",
+        organization: "Cardiac Sudden Death Prediction (Advisor: Prof. Joshua Zhou)",
+        date: "Apr 2026 – Present",
+        description: "Developing a standardized multi-center electronic health record pipeline and fine-tuning EHRFormer with LoRA for cardiac sudden death prediction and downstream clinical evaluation."
+      },
+      {
+        role: "Undergraduate Researcher: SkinGPT-X",
+        organization: "Medical Foundation Model Evaluation (Advisor: Prof. Joshua Zhou)",
+        date: "Dec 2025 – Present",
+        description: "Contributing to an evaluation framework for medical foundation models, including Qwen3, MedGemma, and HuLuMed, with a focus on diagnostic accuracy, complex-case reasoning, and structured error analysis."
+      },
+      {
+        role: "Undergraduate Researcher: Model Editing",
+        organization: "Course Project (Advisor: Prof. Anant Sahai, UC Berkeley)",
         date: "Nov 2025 – Dec 2025",
-        description: "Investigated model editing on <strong>Pythia-6.9B</strong>, utilizing causal tracing to reveal that targeting polysemantic neurons (FINE) causes significantly more collateral damage than layer-level editing (ROME)."
+        description: "Designed experiments on <strong>Pythia-6.9B</strong> using causal tracing and collision analysis, showing that neuron-level FiNE editing causes more collateral damage than layer-level ROME editing when targeting polysemantic neurons."
       }
     ]
   },
@@ -36,15 +41,15 @@ const experience = [
     items: [
       {
         role: "Fintech Algorithm Intern",
-        organization: "China Merchants Bank (Fintech HQ)",
+        organization: "China Merchants Bank, Xiamen",
         date: "Jul 2025 – Aug 2025",
-        description: "Optimized anti-fraud models to boost <strong>AUC-ROC by 12% (>0.95)</strong> and implemented <strong>Token-level XAI</strong> to reduce false-positive rates in production."
+        description: "Optimized a text classification model for anti-fraud detection, increasing <strong>AUC by 12%</strong> while reducing false positives, and developed token-level feature attribution for prediction analysis and review."
       },
       {
         role: "Data Analysis Intern",
         organization: "DigitSuper Technology",
         date: "Apr 2025 – Jun 2025",
-        description: "Engineered Python/SQL pipelines for large-scale ad data and drove a <strong>10% ROAS improvement</strong> through Factorial A/B testings on bidding strategies."
+        description: "Analyzed advertising data with Python and SQL to identify conversion drivers and improve a core product's <strong>BSR by 20%</strong>; designed A/B tests for real-time bidding strategies that increased <strong>ROAS by 10%</strong>."
       }
     ]
   }
@@ -52,11 +57,10 @@ const experience = [
 ---
 
 <BaseLayout
-  title="About Hongyi (Tom) Chen | AI and Data Science"
-  description="Learn about Hongyi (Tom) Chen, a data science undergraduate focused on AI, machine learning, LLM productization, and human-AI interaction."
+  title="Hongyi (Tom) Chen | About"
+  description="Learn about Hongyi (Tom) Chen's education, medical AI and LLM research, quantitative projects, data analysis experience, and technical skills."
 >
   <article class="max-w-3xl mx-auto space-y-12">
-    <!-- Header -->
     <!-- Header -->
     <header class="flex flex-col-reverse md:flex-row items-start justify-between gap-8 md:gap-12">
       <div class="flex-[3] space-y-4">
@@ -64,8 +68,8 @@ const experience = [
           Hi, I'm Hongyi (Tom) Chen
         </h1>
         <p class="text-lg text-gray-600 leading-relaxed">
-          I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong>, having recently completed a visiting program at <strong>UC Berkeley</strong> in Fall 2025. 
-          I focus on the productization of LLMs and reimagining Human-AI interaction.
+          I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong> and completed a visiting program in Computer Science at <strong>UC Berkeley</strong> in Fall 2025.
+          My work spans medical AI, large language model research, quantitative finance, and data analysis.
         </p>
       </div>
       
@@ -81,14 +85,20 @@ const experience = [
     </header>
     
     <!-- CV Download -->
-    <div class="flex items-center gap-4 p-4 bg-gray-100 rounded-lg border border-gray-200">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-gray-100 rounded-lg border border-gray-200">
       <p class="text-gray-600 flex-grow">
-        Here is my latest CV (Last updated: Jan 2026)
+        CVs updated Jun 2026
       </p>
-      <a href="/resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        Download
-      </a>
+      <div class="flex flex-wrap gap-2">
+        <a href="/resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          English
+        </a>
+        <a href="/resume-zh.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          中文
+        </a>
+      </div>
     </div>
 
     <!-- Education -->
@@ -103,13 +113,22 @@ const experience = [
           <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-2 border-gray-900"></div>
           <h3 class="text-lg font-semibold text-gray-900">The Chinese University of Hong Kong, Shenzhen</h3>
           <p class="text-gray-600">B.S. in Data Science</p>
-          <p class="text-sm text-gray-500 mt-1">2023 - Present</p>
+          <p class="text-sm text-gray-500 mt-1">Sep 2023 – Present · GPA: 3.5/4.0 · Top 25% in Major</p>
+          <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+            Coursework: Machine Learning, Optimization, Stochastic Processes, Discrete Mathematics, Ordinary Differential Equations, Probability and Statistics, Linear Algebra, and Data Structures.
+          </p>
+          <p class="text-sm text-gray-600 mt-2">
+            Honors: Dean's List (2023–2024); Zhixing Social Practice Second Prize.
+          </p>
         </div>
         <div class="relative pl-8">
           <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gray-200 border-2 border-gray-300"></div>
           <h3 class="text-lg font-semibold text-gray-900">University of California, Berkeley</h3>
           <p class="text-gray-600">Visiting Student, Computer Science</p>
-          <p class="text-sm text-gray-500 mt-1">Fall 2025</p>
+          <p class="text-sm text-gray-500 mt-1">Aug 2025 – Dec 2025</p>
+          <p class="text-sm text-gray-600 mt-2">
+            Coursework: Introduction to Artificial Intelligence, Machine Structures, and Designing, Visualizing and Understanding Deep Neural Networks.
+          </p>
         </div>
       </div>
     </section>
@@ -143,7 +162,7 @@ const experience = [
         <!-- Projects Link -->
         <div>
            <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm border-b pb-2">Selected Projects</h3>
-           <p class="text-gray-600 mb-4">I have worked on various projects involving LLMs, Computer Vision, and Full Stack Development.</p>
+           <p class="text-gray-600 mb-4">My selected projects cover model editing, quantitative forecasting, and on-device AI agents.</p>
            <a href="/projects" class="inline-flex items-center text-blue-600 font-medium hover:text-blue-800 transition-colors">
              View All Projects 
              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
@@ -152,11 +171,48 @@ const experience = [
       </div>
     </section>
 
+    <!-- Leadership & Extracurricular -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        Leadership & Extracurricular
+      </h2>
+      <div class="space-y-6">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+            <h3 class="font-bold text-gray-900 text-lg">Project Lead, Zhixing Social Practice Program</h3>
+            <span class="text-sm text-gray-500 whitespace-nowrap">Jun 2024 – Oct 2024</span>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Led survey data processing and feature engineering with Python and Pandas, applied K-Means clustering to identify four core user profiles, and delivered findings adopted by CUHK-Shenzhen for student engagement planning.
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
+            <h3 class="font-bold text-gray-900 text-lg">Co-Lead, Rural Revitalization Program</h3>
+            <span class="text-sm text-gray-500 whitespace-nowrap">Aug 2024</span>
+          </div>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Led stakeholder interviews and primary data collection, structured qualitative findings through thematic analysis, and co-authored a report adopted by the local government and featured by local media.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <section>
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Languages</h2>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium border border-gray-200">Mandarin (Native)</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium border border-gray-200">English (TOEFL 109)</span>
+      </div>
+    </section>
+
     <!-- Tech Stack -->
     <section>
       <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
         <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-        Tech Stack
+        Technical Skills
       </h2>
       <div class="space-y-6">
         {skills.map((group) => (
