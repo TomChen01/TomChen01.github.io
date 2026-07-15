@@ -6,22 +6,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	title="Hongyi Chen (Tom Chen) | Machine Learning & Data Science"
 	description="Hongyi Tom Chen is a CUHK-Shenzhen data science undergraduate and machine learning algorithm intern at Shanshu Technology in Shanghai."
 >
-	<aside id="status-card" class="fixed top-[4.75rem] sm:top-[5.5rem] right-4 sm:right-6 lg:right-10 z-40 w-[calc(100%_-_2rem)] sm:w-[min(28rem,calc(100%_-_3rem))] rounded-2xl border border-blue-200 bg-white/95 p-4 sm:p-5 shadow-xl shadow-gray-900/10 backdrop-blur" aria-label="Current status">
+	<aside id="status-card" class="absolute top-3 sm:top-4 left-4 right-4 sm:left-6 sm:right-6 z-40 rounded-xl border border-blue-200 bg-white px-4 py-3 shadow-lg shadow-gray-900/10" aria-label="Current status">
 		<button id="dismiss-status" class="absolute right-3 top-3 rounded-full p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700" aria-label="Dismiss current status">
 			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 		</button>
-		<div class="flex items-start gap-3 pr-8">
-			<span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></span>
-			<div>
-				<p class="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">Now · July 2026</p>
-				<p class="mt-1 text-sm sm:text-base leading-relaxed text-gray-700">
+		<div class="flex items-start sm:items-center gap-3 pr-8">
+			<span class="mt-1.5 sm:mt-0 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></span>
+			<div class="min-w-0 sm:flex sm:items-baseline sm:gap-3">
+				<p class="shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">Now · July 2026</p>
+				<p class="mt-1 sm:mt-0 text-sm leading-relaxed text-gray-700">
 					I joined <a href="https://www.shanshu.ai/about" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-2 hover:text-blue-900">Shanshu Technology (杉数科技 · Shanghai)</a> as an <strong>Algorithm Intern</strong>, focusing on machine learning.
 				</p>
 			</div>
 		</div>
 	</aside>
 
-	<section class="min-h-[62vh] flex flex-col-reverse md:flex-row items-center md:items-start justify-between gap-10 md:gap-12 py-8 sm:py-12 md:py-20">
+	<section class="min-h-[62vh] flex flex-col-reverse md:flex-row items-center md:items-start justify-between gap-10 md:gap-12 pt-36 pb-8 sm:py-12 md:py-20">
 		<div class="min-w-0 flex-[3] space-y-6">
 			<h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 leading-tight">
 				Hi, I'm Hongyi (Tom) Chen :)
