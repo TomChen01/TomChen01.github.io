@@ -26,18 +26,18 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 });
 ---
 
-<BaseLayout title={`Hongyi (Tom) Chen | ${note.data.title}`} description={note.data.description}>
+<BaseLayout title={`${note.data.title} | Hongyi Chen (Tom Chen)`} description={note.data.description}>
   <article class="max-w-3xl mx-auto space-y-10">
     <header class="border-b border-gray-100 pb-8 space-y-4">
       <a href="/notes" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">
         Back to notes
       </a>
       <div class="space-y-3">
-        <h1 class="text-4xl font-bold text-gray-900">{note.data.title}</h1>
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 break-words">{note.data.title}</h1>
         <time datetime={note.data.pubDate.toISOString()} class="block text-sm text-gray-400 font-mono">
           {dateFormat.format(note.data.pubDate)}
         </time>
-        <p class="text-xl text-gray-600">{note.data.description}</p>
+        <p class="text-lg sm:text-xl text-gray-600">{note.data.description}</p>
       </div>
       <div class="flex flex-wrap gap-2">
         {note.data.tags.map((tag) => (

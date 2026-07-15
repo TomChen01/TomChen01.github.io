@@ -5,63 +5,110 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
-  title = "Hongyi (Tom) Chen",
-  description = "Hongyi (Tom) Chen is a data science undergraduate working across medical AI, large language model research, quantitative finance, and data analysis.",
+  title = "Hongyi Chen (Tom Chen) | Machine Learning & Data Science",
+  description = "Hongyi Tom Chen is a CUHK-Shenzhen data science undergraduate and machine learning algorithm intern at Shanshu Technology in Shanghai.",
+  image = '/og.png',
 } = Astro.props;
 
 const siteUrl = 'https://tomchen01.github.io';
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const imageUrl = new URL(image, siteUrl).toString();
+const personImageUrl = new URL('/me1.jpg', siteUrl).toString();
 const profileStructuredData = {
   '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  '@id': `${siteUrl}/#profile`,
-  url: pageUrl,
-  name: title,
-  description,
-  mainEntity: {
-    '@type': 'Person',
-    '@id': `${siteUrl}/#person`,
-    name: 'Hongyi Chen',
-    alternateName: 'Tom Chen',
-    url: siteUrl,
-    image: `${siteUrl}/me1.jpg`,
-    email: 'mailto:tomchen0417@gmail.com',
-    sameAs: [
-      'https://github.com/TomChen01',
-      'https://linkedin.com/in/tomchen17',
-    ],
-    affiliation: [
-      {
-        '@type': 'CollegeOrUniversity',
-        name: 'The Chinese University of Hong Kong, Shenzhen',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Hongyi Tom Chen — Personal Website',
+      alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen'],
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${pageUrl}#profile`,
+      url: pageUrl,
+      name: title,
+      description,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      mainEntity: { '@id': `${siteUrl}/#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Hongyi Chen',
+      alternateName: ['Tom Chen', 'Hongyi Tom Chen', 'Hongyi (Tom) Chen'],
+      url: siteUrl,
+      image: personImageUrl,
+      email: 'mailto:tomchen0417@gmail.com',
+      jobTitle: 'Machine Learning Algorithm Intern',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Shanshu Technology',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Shanghai',
+          addressCountry: 'CN',
+        },
       },
-      {
-        '@type': 'CollegeOrUniversity',
-        name: 'University of California, Berkeley',
-      },
-    ],
-    knowsAbout: [
-      'Medical Artificial Intelligence',
-      'Artificial Intelligence',
-      'Machine Learning',
-      'Large Language Models',
-      'Quantitative Finance',
-      'Data Science',
-      'Data Analysis',
-    ],
-  },
+      affiliation: [
+        {
+          '@type': 'CollegeOrUniversity',
+          name: 'The Chinese University of Hong Kong, Shenzhen',
+          alternateName: 'CUHK-Shenzhen',
+        },
+      ],
+      alumniOf: [
+        {
+          '@type': 'CollegeOrUniversity',
+          name: 'University of California, Berkeley',
+          alternateName: 'UC Berkeley',
+        },
+      ],
+      sameAs: [
+        'https://github.com/TomChen01',
+        'https://linkedin.com/in/tomchen17',
+      ],
+      knowsAbout: [
+        'Medical Artificial Intelligence',
+        'Artificial Intelligence',
+        'Machine Learning',
+        'Large Language Models',
+        'Quantitative Finance',
+        'Data Science',
+        'Data Analysis',
+      ],
+    },
+  ],
 };
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="keywords" content="Hongyi Chen, Tom Chen, Hongyi Tom Chen, Hongyi Chen CUHKSZ, Hongyi Chen CUHK-Shenzhen, machine learning, data science, medical AI" />
+    <meta name="author" content="Hongyi Tom Chen" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Hongyi Tom Chen" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content="Hongyi Tom Chen" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(profileStructuredData)} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,11 +126,11 @@ const profileStructuredData = {
   </head>
   <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
     <Navigation />
-    <main class="flex-grow w-full max-w-5xl mx-auto px-6 py-12">
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <slot />
     </main>
-    <footer class="py-12 text-center text-sm text-gray-400 border-t border-gray-100 mt-auto">
-      <p>&copy; {new Date().getFullYear()} Hongyi Chen. All rights reserved.</p>
+    <footer class="px-4 py-8 sm:py-12 text-center text-sm text-gray-400 border-t border-gray-100 mt-auto">
+      <p>&copy; {new Date().getFullYear()} Hongyi Tom Chen. All rights reserved.</p>
     </footer>
   </body>
 </html>

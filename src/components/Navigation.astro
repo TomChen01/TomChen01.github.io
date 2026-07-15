@@ -4,14 +4,13 @@ const links = [
   { text: "About", href: "/about" },
   { text: "Projects", href: "/projects" },
   { text: "Notes", href: "/notes" },
-  { text: "Hobbies", href: "/hobbies" },
 ];
 ---
-<nav class="w-full flex justify-between items-center py-5 px-6 md:px-12 bg-[#1a1a1a] text-white sticky top-0 z-50 border-b border-gray-800">
+<nav class="w-full flex justify-between items-center py-4 sm:py-5 px-4 sm:px-6 md:px-12 bg-[#1a1a1a] text-white sticky top-0 z-50 border-b border-gray-800">
   <div class="flex items-center gap-2">
-    <a href="/" class="text-2xl font-bold tracking-tight flex items-center gap-2">
+    <a href="/" class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2" aria-label="Hongyi Tom Chen — Home">
       <div class="w-8 h-8 bg-white text-gray-900 rounded-full flex items-center justify-center font-bold text-sm">TC</div>
-      Tom Chen
+      <span class="whitespace-nowrap">Tom Chen</span>
     </a>
   </div>
   
@@ -23,9 +22,24 @@ const links = [
     ))}
   </div>
 
-  <!-- Mobile Menu Button -->
-  <button class="md:hidden p-2 text-gray-400 hover:text-white">
-    <span class="sr-only">Menu</span>
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-  </button>
+  <details class="mobile-menu md:hidden relative">
+    <summary class="p-2 -mr-2 text-gray-300 hover:text-white cursor-pointer list-none rounded-md" aria-label="Open navigation menu">
+      <svg class="menu-open w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      <svg class="menu-close w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </summary>
+    <div class="absolute right-0 top-12 w-52 overflow-hidden rounded-xl border border-gray-700 bg-[#1a1a1a] p-2 shadow-xl">
+      {links.map(link => (
+        <a href={link.href} class="block rounded-lg px-4 py-3 text-base text-gray-200 hover:bg-gray-800 hover:text-white">
+          {link.text}
+        </a>
+      ))}
+    </div>
+  </details>
 </nav>
+
+<style>
+  summary::-webkit-details-marker { display: none; }
+  .menu-close { display: none; }
+  details[open] .menu-open { display: none; }
+  details[open] .menu-close { display: block; }
+</style>

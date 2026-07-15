@@ -7,5 +7,42 @@
 @layer base {
     html {
         font-size: 18px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-width: 0;
+        overflow-x: clip;
+    }
+
+    img,
+    video,
+    iframe {
+        max-width: 100%;
+    }
+
+    pre,
+    table {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    code {
+        overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 639px) {
+        html {
+            font-size: 16px;
+        }
+
+        h1,
+        h2,
+        h3,
+        p,
+        a {
+            overflow-wrap: anywhere;
+        }
     }
 }
