@@ -41,7 +41,7 @@ const experience = [
     items: [
       {
         role: "Algorithm Intern (Machine Learning)",
-        organization: "Shanshu Technology, Shanghai",
+        organization: "杉数科技（上海） / Shanshu Technology",
         date: "Jul 2026 – Present",
         description: "Working on machine learning algorithms and applied modeling as part of the algorithm team."
       },
@@ -157,7 +157,13 @@ const experience = [
                     <h4 class="font-bold text-gray-900 text-lg">{item.role}</h4>
                     <span class="text-sm text-gray-500 whitespace-nowrap">{item.date}</span>
                   </div>
-                  <p class="text-gray-500 italic mb-2 text-sm">{item.organization}</p>
+                  <p class="text-gray-500 italic mb-2 text-sm">
+                    {item.role === "Algorithm Intern (Machine Learning)" ? (
+                      <a href="https://www.shanshu.ai/about" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-300 underline-offset-2 hover:text-blue-700">
+                        {item.organization}
+                      </a>
+                    ) : item.organization}
+                  </p>
                   <p class="text-gray-600 text-sm leading-relaxed" set:html={item.description}></p>
                 </div>
               ))}
