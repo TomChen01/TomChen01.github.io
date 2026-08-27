@@ -1,13 +1,22 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
-const site = 'https://tomchen01.github.io';
+const site = import.meta.env.SITE;
 
 export const GET: APIRoute = async () => {
-  const notes = await getCollection('notes');
-  const paths = ['/', '/about/', '/projects/', '/notes/', ...notes.map((note) => `/notes/${note.id}/`)];
+  const notes = (await getCollection('notes')).filter((note) => note.data.published);
+  const paths = [
+    { path: '/' },
+    { path: '/about/' },
+    { path: '/projects/' },
+    { path: '/notes/' },
+    ...notes.map((note) => ({
+      path: `/notes/${note.id}/`,
+      lastmod: note.data.pubDate.toISOString().slice(0, 10),
+    })),
+  ];
   const urls = paths
-    .map((path) => `<url><loc>${new URL(path, site).toString()}</loc></url>`)
+    .map(({ path, lastmod }) => `<url><loc>${new URL(path, site).toString()}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`)
     .join('');
 
   return new Response(

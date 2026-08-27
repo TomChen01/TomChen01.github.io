@@ -1,8 +1,10 @@
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = () => {
+  const sitemapUrl = new URL('/sitemap.xml', import.meta.env.SITE).toString();
+
   return new Response(
-    `User-agent: *\nAllow: /\n\nSitemap: https://tomchen01.github.io/sitemap.xml\n`,
+    `User-agent: *\nAllow: /\n\nSitemap: ${sitemapUrl}\n`,
     { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
   );
 };

@@ -11,6 +11,7 @@ const projects = defineCollection({
     date: z.string(),
     repoUrl: z.url().optional(),
     publishDate: z.coerce.date(),
+    published: z.boolean().default(true),
   }),
 });
 
@@ -23,6 +24,7 @@ const notes = defineCollection({
     tags: z.array(z.string()),
     pdfUrl: z.string().optional(),
     sourceUrl: z.string().optional(),
+    published: z.boolean().default(true),
   }),
 });
 

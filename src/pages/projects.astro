@@ -2,14 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects')).sort(
+const projects = (await getCollection('projects')).filter((project) => project.data.published).sort(
 	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 ---
 
 <BaseLayout
-	title="Projects by Hongyi Chen (Tom Chen) | AI & Data Science"
-	description="AI, machine learning, data science, and product engineering projects by Hongyi (Tom) Chen."
+	title="AI & Data Science Projects | Hongyi (Tom) Chen"
+	description="Selected AI, machine learning, data systems, and product engineering projects by Hongyi (Tom) Chen."
+	pageType="collection"
 >
 	<div class="max-w-4xl mx-auto">
 		<header class="mb-12 text-center md:text-left">

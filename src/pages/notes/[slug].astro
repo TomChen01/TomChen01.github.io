@@ -4,7 +4,7 @@ import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes');
+  const notes = (await getCollection('notes')).filter((note) => note.data.published);
 
   return notes.map((note) => ({
     params: { slug: note.id },
@@ -26,7 +26,15 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 });
 ---
 
-<BaseLayout title={`${note.data.title} | Hongyi Chen (Tom Chen)`} description={note.data.description}>
+<BaseLayout
+  title={`${note.data.title} | Hongyi (Tom) Chen`}
+  description={note.data.description}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Notes', path: '/notes/' },
+    { name: note.data.title, path: `/notes/${note.id}/` },
+  ]}
+>
   <article class="max-w-3xl mx-auto space-y-10">
     <header class="border-b border-gray-100 pb-8 space-y-4">
       <a href="/notes" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">
@@ -49,6 +57,10 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
     <div class="prose prose-gray max-w-none">
       <Content />
     </div>
+
+    <aside class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600" aria-label="Course note disclaimer">
+      Unofficial course materials; content may contain errors.
+    </aside>
 
     {(note.data.pdfUrl || note.data.sourceUrl) && (
       <section class="border border-gray-200 rounded-lg p-5 space-y-4">

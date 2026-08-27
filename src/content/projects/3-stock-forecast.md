@@ -5,4 +5,5 @@ tags: ["Quantitative Finance", "GRU", "Information Coefficient", "Python"]
 date: "Nov 2025"
 repoUrl: "https://github.com/TomChen01/stock-forecast"
 publishDate: 2025-11-20
+published: false
 ---

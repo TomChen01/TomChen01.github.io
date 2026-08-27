@@ -6,85 +6,100 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  pageType?: 'profile' | 'collection' | 'webpage';
+  noindex?: boolean;
+  breadcrumbs?: Array<{ name: string; path: string }>;
 }
 
 const {
-  title = "Hongyi Chen (Tom Chen) | Machine Learning & Data Science",
-  description = "Hongyi Tom Chen is a CUHK-Shenzhen data science undergraduate and machine learning algorithm intern at Shanshu Technology in Shanghai.",
+  title = 'Hongyi (Tom) Chen | Machine Learning & Data Science',
+  description = 'Hongyi (Tom) Chen is a CUHK-Shenzhen Data Science undergraduate, former UC Berkeley visiting student, and MLE Intern at Cardinal Operations.',
   image = '/og.png',
+  pageType = 'webpage',
+  noindex = false,
+  breadcrumbs = [],
 } = Astro.props;
 
-const siteUrl = 'https://tomchen01.github.io';
+const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
 const personImageUrl = new URL('/me1.jpg', siteUrl).toString();
-const profileStructuredData = {
+const websiteStructuredData = {
+  '@type': 'WebSite',
+  '@id': `${siteUrl}#website`,
+  url: siteUrl,
+  name: 'Hongyi (Tom) Chen',
+  alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen'],
+  inLanguage: 'en',
+};
+const pageStructuredData = {
+  '@type': pageType === 'profile' ? 'ProfilePage' : pageType === 'collection' ? 'CollectionPage' : 'WebPage',
+  '@id': `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: title,
+  description,
+  isPartOf: { '@id': `${siteUrl}#website` },
+};
+const personStructuredData = {
+  '@type': 'Person',
+  '@id': `${siteUrl}#person`,
+  name: 'Hongyi (Tom) Chen',
+  alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen'],
+  url: siteUrl,
+  image: personImageUrl,
+  email: 'mailto:tomchen0417@gmail.com',
+  jobTitle: 'MLE Intern',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Cardinal Operations',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Shanghai',
+      addressCountry: 'CN',
+    },
+  },
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'The Chinese University of Hong Kong, Shenzhen',
+    alternateName: 'CUHK-Shenzhen',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of California, Berkeley',
+    alternateName: 'UC Berkeley',
+  },
+  sameAs: [
+    'https://github.com/TomChen01',
+    'https://linkedin.com/in/tomchen17',
+  ],
+  knowsAbout: [
+    'Medical Artificial Intelligence',
+    'Machine Learning',
+    'Large Language Models',
+    'Model Editing',
+    'Quantitative Finance',
+    'Data Science',
+    'Data Analysis',
+  ],
+};
+const breadcrumbsStructuredData = breadcrumbs.length > 0 ? {
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((breadcrumb, position) => ({
+    '@type': 'ListItem',
+    position: position + 1,
+    name: breadcrumb.name,
+    item: new URL(breadcrumb.path, siteUrl).toString(),
+  })),
+} : null;
+const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'WebSite',
-      '@id': `${siteUrl}/#website`,
-      url: siteUrl,
-      name: 'Hongyi Tom Chen — Personal Website',
-      alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen'],
-      inLanguage: 'en',
-    },
-    {
-      '@type': 'ProfilePage',
-      '@id': `${pageUrl}#profile`,
-      url: pageUrl,
-      name: title,
-      description,
-      isPartOf: { '@id': `${siteUrl}/#website` },
-      mainEntity: { '@id': `${siteUrl}/#person` },
-    },
-    {
-      '@type': 'Person',
-      '@id': `${siteUrl}/#person`,
-      name: 'Hongyi Chen',
-      alternateName: ['Tom Chen', 'Hongyi Tom Chen', 'Hongyi (Tom) Chen'],
-      url: siteUrl,
-      image: personImageUrl,
-      email: 'mailto:tomchen0417@gmail.com',
-      jobTitle: 'Machine Learning Algorithm Intern',
-      worksFor: {
-        '@type': 'Organization',
-        name: 'Shanshu Technology',
-        url: 'https://www.shanshu.ai/about',
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Shanghai',
-          addressCountry: 'CN',
-        },
-      },
-      affiliation: [
-        {
-          '@type': 'CollegeOrUniversity',
-          name: 'The Chinese University of Hong Kong, Shenzhen',
-          alternateName: 'CUHK-Shenzhen',
-        },
-      ],
-      alumniOf: [
-        {
-          '@type': 'CollegeOrUniversity',
-          name: 'University of California, Berkeley',
-          alternateName: 'UC Berkeley',
-        },
-      ],
-      sameAs: [
-        'https://github.com/TomChen01',
-        'https://linkedin.com/in/tomchen17',
-      ],
-      knowsAbout: [
-        'Medical Artificial Intelligence',
-        'Artificial Intelligence',
-        'Machine Learning',
-        'Large Language Models',
-        'Quantitative Finance',
-        'Data Science',
-        'Data Analysis',
-      ],
-    },
+    websiteStructuredData,
+    pageType === 'profile'
+      ? { ...pageStructuredData, mainEntity: { '@id': `${siteUrl}#person` } }
+      : pageStructuredData,
+    ...(pageType === 'profile' ? [personStructuredData] : []),
+    ...(breadcrumbsStructuredData ? [breadcrumbsStructuredData] : []),
   ],
 };
 ---
@@ -96,23 +111,24 @@ const profileStructuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="keywords" content="Hongyi Chen, Tom Chen, Hongyi Tom Chen, Hongyi Chen CUHKSZ, Hongyi Chen CUHK-Shenzhen, machine learning, data science, medical AI" />
-    <meta name="author" content="Hongyi Tom Chen" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Hongyi (Tom) Chen" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={pageUrl} />
-    <meta property="og:type" content="profile" />
-    <meta property="og:site_name" content="Hongyi Tom Chen" />
+    <meta property="og:type" content={pageType === 'profile' ? 'profile' : 'website'} />
+    <meta property="og:site_name" content="Hongyi (Tom) Chen" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:alt" content="Hongyi Tom Chen" />
+    <meta property="og:image:alt" content="Hongyi (Tom) Chen" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content="Hongyi (Tom) Chen" />
+    <meta name="twitter:url" content={pageUrl} />
     <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(profileStructuredData)} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
@@ -127,12 +143,21 @@ const profileStructuredData = {
     </style>
   </head>
   <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <Navigation />
-    <main class="relative flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <main id="main-content" tabindex="-1" class="relative flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <slot />
     </main>
     <footer class="px-4 py-8 sm:py-12 text-center text-sm text-gray-400 border-t border-gray-100 mt-auto">
-      <p>&copy; {new Date().getFullYear()} Hongyi Tom Chen. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} Hongyi (Tom) Chen. All rights reserved.</p>
     </footer>
+    <script>
+      const skipLink = document.querySelector<HTMLAnchorElement>('.skip-link');
+      const mainContent = document.querySelector<HTMLElement>('#main-content');
+
+      skipLink?.addEventListener('click', () => {
+        mainContent?.focus();
+      });
+    </script>
   </body>
 </html>
