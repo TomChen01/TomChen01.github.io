@@ -27,7 +27,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 ---
 
 <BaseLayout
-  title={`${note.data.title} | Hongyi (Tom) Chen`}
+  title={`${note.data.seoTitle ?? note.data.title} | Hongyi (Tom) Chen`}
   description={note.data.description}
   breadcrumbs={[
     { name: 'Home', path: '/' },
