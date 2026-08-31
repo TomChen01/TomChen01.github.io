@@ -9,15 +9,17 @@ interface Props {
   pageType?: 'profile' | 'collection' | 'webpage';
   noindex?: boolean;
   breadcrumbs?: Array<{ name: string; path: string }>;
+  keywords?: string[];
 }
 
 const {
   title = 'Hongyi (Tom) Chen | Home',
-  description = 'Hongyi (Tom) Chen (陈洪熠) is a Data Science undergraduate at CUHK-Shenzhen (香港中文大学（深圳）), former UC Berkeley visiting student, and MLE Intern.',
+  description = 'Hongyi (Tom) Chen (陈洪熠) is a Data Science undergraduate at CUHK-Shenzhen, former UC Berkeley visiting student, and MLE Intern.',
   image = '/og.png',
   pageType = 'webpage',
   noindex = false,
   breadcrumbs = [],
+  keywords = [],
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
@@ -38,6 +40,7 @@ const pageStructuredData = {
   url: pageUrl,
   name: title,
   description,
+  ...(keywords.length > 0 ? { keywords } : {}),
   isPartOf: { '@id': `${siteUrl}#website` },
 };
 const personStructuredData = {
