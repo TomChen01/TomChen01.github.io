@@ -12,7 +12,7 @@ export const GET: APIRoute = async () => {
     { path: '/notes/' },
     ...notes.map((note) => ({
       path: `/notes/${note.id}/`,
-      lastmod: note.data.pubDate.toISOString().slice(0, 10),
+      lastmod: (note.data.updatedDate ?? note.data.pubDate).toISOString().slice(0, 10),
     })),
   ];
   const urls = paths

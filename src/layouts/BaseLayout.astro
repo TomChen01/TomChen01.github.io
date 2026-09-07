@@ -6,10 +6,13 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  pageType?: 'profile' | 'collection' | 'webpage';
+  pageType?: 'profile' | 'collection' | 'article' | 'webpage';
   noindex?: boolean;
   breadcrumbs?: Array<{ name: string; path: string }>;
   keywords?: string[];
+  headline?: string;
+  publishedTime?: Date;
+  modifiedTime?: Date;
 }
 
 const {
@@ -20,6 +23,9 @@ const {
   noindex = false,
   breadcrumbs = [],
   keywords = [],
+  headline = title,
+  publishedTime,
+  modifiedTime,
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
@@ -35,12 +41,31 @@ const websiteStructuredData = {
   inLanguage: 'en',
 };
 const pageStructuredData = {
-  '@type': pageType === 'profile' ? 'ProfilePage' : pageType === 'collection' ? 'CollectionPage' : 'WebPage',
+  '@type': pageType === 'profile'
+    ? 'ProfilePage'
+    : pageType === 'collection'
+      ? 'CollectionPage'
+      : pageType === 'article'
+        ? 'Article'
+        : 'WebPage',
   '@id': `${pageUrl}#webpage`,
   url: pageUrl,
   name: title,
   description,
   ...(keywords.length > 0 ? { keywords } : {}),
+  ...(pageType === 'article' ? {
+    headline,
+    image: imageUrl,
+    mainEntityOfPage: pageUrl,
+    author: {
+      '@type': 'Person',
+      '@id': `${siteUrl}#person`,
+      name: 'Hongyi (Tom) Chen',
+      url: new URL('/about/', siteUrl).toString(),
+    },
+    ...(publishedTime ? { datePublished: publishedTime.toISOString() } : {}),
+    ...(modifiedTime ? { dateModified: modifiedTime.toISOString() } : {}),
+  } : {}),
   isPartOf: { '@id': `${siteUrl}#website` },
 };
 const personStructuredData = {
@@ -125,13 +150,15 @@ const structuredData = {
     <meta name="author" content="Hongyi (Tom) Chen" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={pageUrl} />
-    <meta property="og:type" content={pageType === 'profile' ? 'profile' : 'website'} />
+    <meta property="og:type" content={pageType === 'profile' ? 'profile' : pageType === 'article' ? 'article' : 'website'} />
     <meta property="og:site_name" content="Hongyi (Tom) Chen" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:alt" content="Hongyi (Tom) Chen" />
+    {pageType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {pageType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

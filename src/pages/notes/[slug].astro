@@ -29,7 +29,11 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 <BaseLayout
   title={`${note.data.seoTitle ?? note.data.title} | Hongyi (Tom) Chen`}
   description={note.data.description}
+  pageType="article"
   keywords={note.data.seoKeywords}
+  headline={note.data.title}
+  publishedTime={note.data.pubDate}
+  modifiedTime={note.data.updatedDate}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Notes', path: '/notes/' },
@@ -43,9 +47,17 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
       </a>
       <div class="space-y-3">
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 break-words">{note.data.title}</h1>
-        <time datetime={note.data.pubDate.toISOString()} class="block text-sm text-gray-400 font-mono">
-          {dateFormat.format(note.data.pubDate)}
-        </time>
+        <p class="text-sm text-gray-400">
+          By <a href="/about/" rel="author" class="font-medium text-gray-500 hover:text-blue-600">Hongyi (Tom) Chen</a>
+          <span aria-hidden="true"> · </span>
+          <time datetime={note.data.pubDate.toISOString()}>{dateFormat.format(note.data.pubDate)}</time>
+          {note.data.updatedDate && (
+            <>
+              <span aria-hidden="true"> · </span>
+              Updated <time datetime={note.data.updatedDate.toISOString()}>{dateFormat.format(note.data.updatedDate)}</time>
+            </>
+          )}
+        </p>
         <p class="text-lg sm:text-xl text-gray-600">{note.data.description}</p>
       </div>
       <div class="flex flex-wrap gap-2">

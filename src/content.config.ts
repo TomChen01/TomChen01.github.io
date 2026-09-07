@@ -22,6 +22,7 @@ const notes = defineCollection({
     seoTitle: z.string().optional(),
     seoKeywords: z.array(z.string()).optional(),
     pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
     description: z.string(),
     tags: z.array(z.string()),
     pdfUrl: z.string().optional(),
