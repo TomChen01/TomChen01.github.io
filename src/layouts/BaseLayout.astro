@@ -38,12 +38,19 @@ const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
 const personImageUrl = new URL('/me1.jpg', siteUrl).toString();
+const identityName = pageType === 'profile' ? 'Hongyi Chen' : 'Hongyi (Tom) Chen';
+const identityAlternateNames = [
+  pageType === 'profile' ? 'Hongyi (Tom) Chen' : 'Hongyi Chen',
+  'Tom Chen',
+  'Hongyi Tom Chen',
+  '陈洪熠',
+];
 const websiteStructuredData = {
   '@type': 'WebSite',
   '@id': `${siteUrl}#website`,
   url: siteUrl,
-  name: 'Hongyi (Tom) Chen',
-  alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen', '陈洪熠'],
+  name: identityName,
+  alternateName: identityAlternateNames,
   inLanguage: 'en',
 };
 const pageStructuredData = {
@@ -58,6 +65,7 @@ const pageStructuredData = {
   url: pageUrl,
   name: title,
   description,
+  ...(pageType === 'profile' && modifiedTime ? { dateModified: modifiedTime.toISOString() } : {}),
   ...(keywords.length > 0 ? { keywords } : {}),
   ...(pageType === 'article' ? {
     headline,
@@ -107,8 +115,13 @@ const pageStructuredData = {
 const personStructuredData = {
   '@type': 'Person',
   '@id': `${siteUrl}#person`,
-  name: 'Hongyi (Tom) Chen',
-  alternateName: ['Hongyi Chen', 'Tom Chen', 'Hongyi Tom Chen', '陈洪熠'],
+  name: identityName,
+  alternateName: identityAlternateNames,
+  ...(pageType === 'profile' ? {
+    givenName: 'Hongyi',
+    familyName: 'Chen',
+    description: 'Hongyi Chen (Tom Chen), a Data Science undergraduate at CUHK-Shenzhen and former UC Berkeley visiting student working in medical AI and machine learning.',
+  } : {}),
   url: siteUrl,
   image: personImageUrl,
   email: 'mailto:tomchen0417@gmail.com',
@@ -184,11 +197,11 @@ const structuredData = {
     <meta name="generator" content={Astro.generator} />
     <meta name="google-site-verification" content="ccYNUI-sljnTWZFekqqHm9KhFPlyqYsmMNRwgrmVCHA" />
     <meta name="description" content={description} />
-    <meta name="author" content="Hongyi (Tom) Chen" />
+    <meta name="author" content={identityName} />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <link rel="canonical" href={pageUrl} />
     <meta property="og:type" content={pageType === 'profile' ? 'profile' : pageType === 'article' ? 'article' : 'website'} />
-    <meta property="og:site_name" content="Hongyi (Tom) Chen" />
+    <meta property="og:site_name" content={identityName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
