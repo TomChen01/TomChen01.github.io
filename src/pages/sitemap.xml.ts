@@ -5,11 +5,16 @@ const site = import.meta.env.SITE;
 
 export const GET: APIRoute = async () => {
   const notes = (await getCollection('notes')).filter((note) => note.data.published);
+  const notesLastmod = notes
+    .map((note) => note.data.updatedDate ?? note.data.pubDate)
+    .sort((a, b) => b.getTime() - a.getTime())[0]
+    ?.toISOString()
+    .slice(0, 10);
   const paths = [
     { path: '/' },
     { path: '/about/' },
     { path: '/projects/' },
-    { path: '/notes/' },
+    { path: '/notes/', lastmod: notesLastmod },
     ...notes.map((note) => ({
       path: `/notes/${note.id}/`,
       lastmod: (note.data.updatedDate ?? note.data.pubDate).toISOString().slice(0, 10),

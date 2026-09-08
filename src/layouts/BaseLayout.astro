@@ -13,6 +13,9 @@ interface Props {
   headline?: string;
   publishedTime?: Date;
   modifiedTime?: Date;
+  topics?: string[];
+  downloads?: Array<{ name: string; url: string; format: string }>;
+  collectionItems?: Array<{ name: string; path: string; description: string }>;
 }
 
 const {
@@ -26,6 +29,9 @@ const {
   headline = title,
   publishedTime,
   modifiedTime,
+  topics = [],
+  downloads = [],
+  collectionItems = [],
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
@@ -57,6 +63,20 @@ const pageStructuredData = {
     headline,
     image: imageUrl,
     mainEntityOfPage: pageUrl,
+    inLanguage: 'en',
+    articleSection: 'Course Notes',
+    isAccessibleForFree: true,
+    ...(topics.length > 0 ? {
+      about: topics.map((name) => ({ '@type': 'Thing', name })),
+    } : {}),
+    ...(downloads.length > 0 ? {
+      encoding: downloads.map((download) => ({
+        '@type': 'MediaObject',
+        name: download.name,
+        contentUrl: new URL(download.url, siteUrl).toString(),
+        encodingFormat: download.format,
+      })),
+    } : {}),
     author: {
       '@type': 'Person',
       '@id': `${siteUrl}#person`,
@@ -65,6 +85,22 @@ const pageStructuredData = {
     },
     ...(publishedTime ? { datePublished: publishedTime.toISOString() } : {}),
     ...(modifiedTime ? { dateModified: modifiedTime.toISOString() } : {}),
+  } : {}),
+  ...(pageType === 'collection' && collectionItems.length > 0 ? {
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: collectionItems.length,
+      itemListElement: collectionItems.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Article',
+          name: item.name,
+          url: new URL(item.path, siteUrl).toString(),
+          description: item.description,
+        },
+      })),
+    },
   } : {}),
   isPartOf: { '@id': `${siteUrl}#website` },
 };

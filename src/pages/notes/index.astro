@@ -36,6 +36,11 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 		'cuhksz course notes',
 		'gzs course notes',
 	]}
+  collectionItems={sortedNotes.map((note) => ({
+    name: note.data.title,
+    path: `/notes/${note.id}/`,
+    description: note.data.description,
+  }))}
 >
   <div class="max-w-3xl mx-auto space-y-12">
     <div class="border-b border-gray-100 pb-8">
@@ -49,7 +54,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
     <div class="space-y-8">
       {sortedNotes.map((note) => (
         <article class="group">
-            <a href={`/notes/${note.id}`} class="block space-y-2">
+            <a href={`/notes/${note.id}/`} class="block space-y-2">
                 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                     <h2 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                         {note.data.title}
