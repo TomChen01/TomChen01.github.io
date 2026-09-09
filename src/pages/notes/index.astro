@@ -16,11 +16,11 @@ const sortedNotes = allNotes.sort((a, b) => {
   return a.data.title.localeCompare(b.data.title);
 });
 
-const dateFormat = new Intl.DateTimeFormat('en-US', {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric',
-});
+const groupLabel = (note: typeof sortedNotes[number]) => `${note.data.institution} · ${note.data.term}`;
+const groups = [...new Set(sortedNotes.map(groupLabel))].map((label) => ({
+  label,
+  notes: sortedNotes.filter((note) => groupLabel(note) === label),
+}));
 ---
 
 	<BaseLayout
@@ -42,38 +42,32 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
     description: note.data.description,
   }))}
 >
-  <div class="max-w-3xl mx-auto space-y-12">
-    <div class="border-b border-gray-100 pb-8">
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Notes</h1>
-      <p class="text-lg sm:text-xl text-gray-600">
-        Course notes in artificial intelligence, deep learning, machine learning, optimization, and stochastic processes.
-      </p>
-      <p class="mt-4 text-sm text-gray-500">Unofficial course materials; content may contain errors.</p>
-    </div>
+  <div class="max-w-3xl mx-auto space-y-10">
+    <header class="space-y-3">
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Notes</h1>
+      <p class="text-base text-gray-600">Personal course notes, organized by university and semester.</p>
+    </header>
 
-    <div class="space-y-8">
-      {sortedNotes.map((note) => (
-        <article class="group">
-            <a href={`/notes/${note.id}/`} class="block space-y-2">
-                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                    <h2 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                        {note.data.title}
-                    </h2>
-                    <time datetime={note.data.pubDate.toISOString()} class="text-sm text-gray-400 font-mono flex-shrink-0">
-                        {dateFormat.format(note.data.pubDate)}
-                    </time>
-                </div>
-                <p class="text-gray-600 text-sm line-clamp-2">
-                    {note.data.description}
-                </p>
-                 <div class="flex gap-2">
-                    {note.data.tags.slice(0, 3).map(tag => (
-                        <span class="text-xs text-gray-400">#{tag}</span>
-                    ))}
-                </div>
-            </a>
-        </article>
-      ))}
-    </div>
+    {groups.map((group) => (
+      <section aria-label={group.label}>
+        <h2 class="border-b border-gray-200 pb-3 text-sm font-semibold text-gray-600">{group.label}</h2>
+        <ul class="divide-y divide-gray-200">
+          {group.notes.map((note) => (
+            <li class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+              <a href={`/notes/${note.id}/`} class="group min-w-0 flex-1 space-y-1">
+                <span class="block text-xs font-semibold tracking-wide text-gray-500">{note.data.courseCode}</span>
+                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600">{note.data.courseName}</h3>
+              </a>
+              <div class="flex shrink-0 items-center gap-4 text-sm font-medium">
+                {note.data.pdfUrl && <a href={note.data.pdfUrl} aria-label={`${note.data.courseCode} PDF`} class="inline-flex min-h-11 items-center text-blue-700 hover:underline underline-offset-4">PDF</a>}
+                {note.data.sourceUrl && <a href={note.data.sourceUrl} aria-label={`${note.data.courseCode} LaTeX source`} class="inline-flex min-h-11 items-center text-gray-600 hover:text-blue-700 hover:underline underline-offset-4">LaTeX</a>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <p class="border-t border-gray-200 pt-5 text-sm text-gray-500">Unofficial course materials; content may contain errors.</p>
   </div>
 </BaseLayout>

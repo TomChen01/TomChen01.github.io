@@ -45,49 +45,24 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
     { name: note.data.title, path: `/notes/${note.id}/` },
   ]}
 >
-  <article class="max-w-3xl mx-auto space-y-10">
-    <header class="border-b border-gray-100 pb-8 space-y-4">
-      <a href="/notes/" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">
-        Back to notes
+  <article class="max-w-3xl mx-auto space-y-8">
+    <header class="space-y-6">
+      <a href="/notes/" class="inline-flex min-h-11 items-center text-sm text-gray-500 hover:text-blue-600 transition-colors">
+        ← All notes
       </a>
       <div class="space-y-3">
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 break-words">{note.data.title}</h1>
-        <p class="text-sm text-gray-400">
-          By <a href="/about/" rel="author" class="font-medium text-gray-500 hover:text-blue-600">Hongyi (Tom) Chen</a>
-          <span aria-hidden="true"> · </span>
-          <time datetime={note.data.pubDate.toISOString()}>{dateFormat.format(note.data.pubDate)}</time>
-          {note.data.updatedDate && (
-            <>
-              <span aria-hidden="true"> · </span>
-              Updated <time datetime={note.data.updatedDate.toISOString()}>{dateFormat.format(note.data.updatedDate)}</time>
-            </>
-          )}
-        </p>
-        <p class="text-lg sm:text-xl text-gray-600">{note.data.description}</p>
-      </div>
-      <div class="flex flex-wrap gap-2">
-        {note.data.tags.map((tag) => (
-          <span class="text-xs text-gray-500 bg-gray-100 rounded px-2 py-1">#{tag}</span>
-        ))}
+        <p class="text-sm font-semibold tracking-wide text-blue-700">{note.data.courseCode}</p>
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight text-gray-900">{note.data.courseName}</h1>
+        <p class="text-base text-gray-600">{note.data.institution} · {note.data.term}</p>
       </div>
     </header>
-
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-
-    <aside class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600" aria-label="Course note disclaimer">
-      Unofficial course materials; content may contain errors.
-    </aside>
-
     {(note.data.pdfUrl || note.data.sourceUrl) && (
-      <section class="border border-gray-200 rounded-lg p-5 space-y-4">
-        <h2 class="text-lg font-semibold text-gray-900">Downloads</h2>
+      <section aria-label="Downloads" class="border-b border-gray-200 pb-8">
         <div class="flex flex-wrap gap-3">
           {note.data.pdfUrl && (
             <a
               href={note.data.pdfUrl}
-              class="inline-flex items-center rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 transition-colors"
+              class="inline-flex min-h-11 items-center rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-colors"
             >
               Download PDF
             </a>
@@ -95,7 +70,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
           {note.data.sourceUrl && (
             <a
               href={note.data.sourceUrl}
-              class="inline-flex items-center rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:border-blue-600 hover:text-blue-600 transition-colors"
+              class="inline-flex min-h-11 items-center rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-800 hover:border-blue-600 hover:text-blue-600 transition-colors"
             >
               Download LaTeX source
             </a>
@@ -103,5 +78,37 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
         </div>
       </section>
     )}
+
+    <div class="note-content text-base leading-relaxed text-gray-700">
+      <Content />
+    </div>
+
+    <footer class="border-t border-gray-200 pt-5 space-y-3 text-sm text-gray-500">
+      <p>
+        By <a href="/about/" rel="author" class="font-medium hover:text-blue-600">Hongyi (Tom) Chen</a>
+        <span aria-hidden="true"> · </span>
+        Updated <time datetime={(note.data.updatedDate ?? note.data.pubDate).toISOString()}>{dateFormat.format(note.data.updatedDate ?? note.data.pubDate)}</time>
+      </p>
+      <p>Unofficial course materials; content may contain errors.</p>
+    </footer>
   </article>
 </BaseLayout>
+
+<style>
+  .note-content :global(h2) {
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  .note-content :global(ul) {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .note-content :global(li + li) {
+    margin-top: 0.75rem;
+  }
+  .note-content :global(li::marker) {
+    color: #9ca3af;
+  }
+</style>
