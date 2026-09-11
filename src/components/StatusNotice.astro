@@ -1,0 +1,24 @@
+<!-- Optional home announcement. Import and render this component to enable it again. -->
+<aside id="status-card" class="absolute top-3 sm:top-4 left-4 right-4 sm:left-6 sm:right-6 z-40 rounded-xl border border-blue-200 bg-white px-4 py-3 shadow-lg shadow-gray-900/10" aria-label="Current status">
+	<button id="dismiss-status" class="absolute right-2 top-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700" aria-label="Dismiss current status">
+		<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+	</button>
+	<div class="flex items-start sm:items-center gap-3 pr-8">
+		<span class="mt-1.5 sm:mt-0 h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></span>
+		<div class="min-w-0 sm:flex sm:items-baseline sm:gap-3">
+			<p class="shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">Now · August 2026</p>
+			<p class="mt-1 sm:mt-0 text-sm leading-relaxed text-gray-700">
+				I recently joined <a href="https://www.shanshu.ai/about" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-2 hover:text-blue-900">Cardinal Operations (杉数科技 · Shanghai)</a> as an <strong>MLE Intern</strong>, focusing on machine learning.
+			</p>
+		</div>
+	</div>
+</aside>
+<script>
+	const card = document.querySelector<HTMLElement>('#status-card');
+	const dismissButton = document.querySelector<HTMLButtonElement>('#dismiss-status');
+	if (sessionStorage.getItem('status-card-dismissed-v2') === 'true') card?.remove();
+	dismissButton?.addEventListener('click', () => {
+		sessionStorage.setItem('status-card-dismissed-v2', 'true');
+		card?.remove();
+	});
+</script>

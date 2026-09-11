@@ -5,17 +5,14 @@ courseName: "Deep Neural Network"
 institution: "UC Berkeley"
 term: "Fall 2025"
 pubDate: 2026-05-31
-updatedDate: 2026-09-09
+updatedDate: 2026-09-12
 description: "UC Berkeley COMPSCI C182 Deep Neural Network notes covering optimization, regularization, CNNs, graph neural networks, RNNs, and transformers."
 tags: ["COMPSCI C182", "Deep Neural Network", "UC Berkeley", "Course Notes"]
 pdfUrl: "/notes/compsci_c182_notes.pdf"
 ---
 ## Topics covered
 
-- Supervised learning and empirical risk minimization
-- Regularization, early stopping, and weight decay
-- Gradient descent, stochastic optimization, and Adam
-- Initialization and normalization
-- Convolutional neural networks and data augmentation
-- Graph neural networks and recurrent neural networks
-- Transformers and autoregressive language models
+- **Learning & generalization:** Supervised learning, empirical risk minimization, regularization, early stopping, and weight decay.
+- **Training:** Gradient descent, stochastic optimization, Adam, initialization, and normalization.
+- **Neural architectures:** Convolutional, graph, and recurrent neural networks; data augmentation.
+- **Language models:** Transformers and autoregressive modeling.

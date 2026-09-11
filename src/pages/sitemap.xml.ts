@@ -11,7 +11,7 @@ export const GET: APIRoute = async () => {
     ?.toISOString()
     .slice(0, 10);
   const paths = [
-    { path: '/', lastmod: '2026-09-08' },
+    { path: '/', lastmod: '2026-09-12' },
     { path: '/about/', lastmod: '2026-09-08' },
     { path: '/projects/' },
     { path: '/notes/', lastmod: notesLastmod },
