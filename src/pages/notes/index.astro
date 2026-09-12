@@ -24,9 +24,13 @@ const groups = [...new Set(sortedNotes.map(groupLabel))].map((label) => ({
 ---
 
 	<BaseLayout
-	title="AI & Machine Learning Notes | Hongyi (Tom) Chen"
-	description="Course notes by Hongyi (Tom) Chen in artificial intelligence, deep learning, machine learning, optimization, and stochastic processes."
+	title="Course Notes: AI, Machine Learning & Math | Hongyi Chen"
+	description="Free PDF course notes for UC Berkeley CS188 and CS C182, plus CUHK-Shenzhen machine learning, optimization, and stochastic processes, by Hongyi (Tom) Chen."
   pageType="collection"
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Course Notes', path: '/notes/' },
+  ]}
 	keywords={[
 		'陈洪熠 课程笔记',
 		'陈洪熠 港中深 笔记',
@@ -37,14 +41,15 @@ const groups = [...new Set(sortedNotes.map(groupLabel))].map((label) => ({
 		'gzs course notes',
 	]}
   collectionItems={sortedNotes.map((note) => ({
-    name: note.data.title,
+    name: `${note.data.courseCode}: ${note.data.courseName} Notes`,
     path: `/notes/${note.id}/`,
     description: note.data.description,
   }))}
 >
   <div class="max-w-3xl mx-auto space-y-10">
     <header class="space-y-3">
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Notes</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Course Notes</h1>
+      <p class="text-base leading-relaxed text-gray-600">Course notes from UC Berkeley and CUHK-Shenzhen, with free PDFs and LaTeX source where available.</p>
     </header>
 
     {groups.map((group) => (
@@ -55,7 +60,7 @@ const groups = [...new Set(sortedNotes.map(groupLabel))].map((label) => ({
             <li class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
               <a href={`/notes/${note.id}/`} class="group min-w-0 flex-1 space-y-1">
                 <span class="block text-sm font-semibold tracking-wide text-gray-500">{note.data.courseCode}</span>
-                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600">{note.data.courseName}</h3>
+                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600">{note.data.courseName} Notes</h3>
               </a>
               <div class="flex shrink-0 items-center gap-4 text-sm font-medium">
                 {note.data.pdfUrl && <a href={note.data.pdfUrl} aria-label={`${note.data.courseCode} PDF`} class="inline-flex min-h-11 items-center text-blue-700 hover:underline underline-offset-4">PDF</a>}

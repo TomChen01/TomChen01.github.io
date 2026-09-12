@@ -18,25 +18,26 @@ type Props = {
 
 const { note } = Astro.props;
 const { Content } = await render(note);
+const headline = `${note.data.courseCode}: ${note.data.courseName} Notes`;
 ---
 
 <BaseLayout
-  title={`${note.data.seoTitle ?? note.data.title} | Hongyi (Tom) Chen`}
+  title={`${note.data.seoTitle ?? `${headline} | ${note.data.institution}`} | Hongyi Chen`}
   description={note.data.description}
   pageType="article"
   keywords={note.data.seoKeywords}
-  headline={note.data.title}
+  headline={headline}
   publishedTime={note.data.pubDate}
   modifiedTime={note.data.updatedDate}
   topics={note.data.tags}
   downloads={[
-    ...(note.data.pdfUrl ? [{ name: `${note.data.title} PDF`, url: note.data.pdfUrl, format: 'application/pdf' }] : []),
-    ...(note.data.sourceUrl ? [{ name: `${note.data.title} LaTeX source`, url: note.data.sourceUrl, format: 'application/x-tex' }] : []),
+    ...(note.data.pdfUrl ? [{ name: `${headline} PDF`, url: note.data.pdfUrl, format: 'application/pdf' }] : []),
+    ...(note.data.sourceUrl ? [{ name: `${headline} LaTeX source`, url: note.data.sourceUrl, format: 'application/x-tex' }] : []),
   ]}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Notes', path: '/notes/' },
-    { name: note.data.title, path: `/notes/${note.id}/` },
+    { name: headline, path: `/notes/${note.id}/` },
   ]}
 >
   <article class="max-w-3xl mx-auto space-y-8">
@@ -46,8 +47,9 @@ const { Content } = await render(note);
       </a>
       <div class="space-y-3">
         <p class="text-sm font-semibold tracking-wide text-blue-700">{note.data.courseCode}</p>
-        <h1 class="text-3xl sm:text-4xl font-bold leading-tight text-gray-900">{note.data.courseName}</h1>
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight text-gray-900">{headline}</h1>
         <p class="text-base text-gray-600">{note.data.institution} · {note.data.term}</p>
+        <p class="text-base leading-relaxed text-gray-600">{note.data.description}</p>
       </div>
     </header>
     {(note.data.pdfUrl || note.data.sourceUrl) && (
@@ -58,7 +60,7 @@ const { Content } = await render(note);
               href={note.data.pdfUrl}
               class="inline-flex min-h-11 items-center rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-colors"
             >
-              Read PDF
+              Read {note.data.courseCode} notes (PDF)
             </a>
           )}
           {note.data.sourceUrl && (

@@ -38,9 +38,9 @@ const siteUrl = Astro.site?.toString() ?? Astro.url.origin;
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
 const personImageUrl = new URL('/me1.jpg', siteUrl).toString();
-const identityName = pageType === 'profile' ? 'Hongyi Chen' : 'Hongyi (Tom) Chen';
+const identityName = 'Hongyi Chen';
 const identityAlternateNames = [
-  pageType === 'profile' ? 'Hongyi (Tom) Chen' : 'Hongyi Chen',
+  'Hongyi (Tom) Chen',
   'Tom Chen',
   'Hongyi Tom Chen',
   '陈洪熠',
@@ -88,7 +88,7 @@ const pageStructuredData = {
     author: {
       '@type': 'Person',
       '@id': `${siteUrl}#person`,
-      name: 'Hongyi (Tom) Chen',
+      name: identityName,
       url: new URL('/about/', siteUrl).toString(),
     },
     ...(publishedTime ? { datePublished: publishedTime.toISOString() } : {}),
@@ -122,7 +122,7 @@ const personStructuredData = {
     familyName: 'Chen',
     description: 'Hongyi Chen (Tom Chen), a Data Science undergraduate at CUHK-Shenzhen and former UC Berkeley visiting student working in medical AI and machine learning.',
   } : {}),
-  url: siteUrl,
+  url: new URL('/about/', siteUrl).toString(),
   image: personImageUrl,
   email: 'mailto:tomchen0417@gmail.com',
   jobTitle: 'MLE Intern',

@@ -63,10 +63,14 @@ const experience = [
 ---
 
 <BaseLayout
-  title="About Hongyi Chen | CUHK-Shenzhen"
-  description="Hongyi Chen's education, research and experience: Data Science at CUHK-Shenzhen, visiting study at UC Berkeley, medical AI and machine learning."
+  title="About Hongyi Chen (Tom) | Research & Experience"
+  description="Hongyi Chen (Tom Chen, 陈洪熠): education at CUHK-Shenzhen and UC Berkeley, medical AI and LLM research, machine learning internships, and downloadable CVs."
   pageType="profile"
-  modifiedTime={new Date('2026-09-08')}
+  modifiedTime={new Date('2026-09-12')}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'About Hongyi Chen', path: '/about/' },
+  ]}
   keywords={[
     '陈洪熠 港中深',
     '陈洪熠 香港中文大学深圳',
@@ -82,10 +86,10 @@ const experience = [
     <header class="flex flex-col-reverse md:flex-row items-start justify-between gap-8 md:gap-12">
       <div class="flex-[3] space-y-4">
         <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 leading-tight">
-          Hi, I'm Hongyi (Tom) Chen
+          About Hongyi (Tom) Chen
         </h1>
         <p class="text-lg text-gray-600 leading-relaxed">
-          I am a Data Science undergraduate at <strong>CUHK-Shenzhen</strong> and completed a visiting program in Computer Science at <strong>UC Berkeley</strong> in Fall 2025.
+          I am Hongyi Chen (<span lang="zh-Hans">陈洪熠</span>), a Data Science undergraduate at <strong>CUHK-Shenzhen</strong>. I completed a visiting program in Computer Science at <strong>UC Berkeley</strong> in Fall 2025.
           My work spans medical AI, large language model research, machine learning engineering, and intelligent data systems.
         </p>
       </div>
@@ -113,11 +117,11 @@ const experience = [
       <div class="flex flex-wrap gap-2">
         <a href="/Hongyi_Chen_CV.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          English
+          English CV
         </a>
         <a href="/陈洪熠_CV.pdf" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-900 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          中文
+          中文简历
         </a>
       </div>
     </div>
@@ -144,6 +148,10 @@ const experience = [
         </div>
       </div>
     </section>
+
+    <p class="text-base text-gray-600 leading-relaxed">
+      I share <a href="/notes/" class="text-blue-700 hover:underline underline-offset-4">course notes in AI, machine learning, optimization, and stochastic processes</a> from both universities.
+    </p>
 
     <!-- Experience -->
     <section>
