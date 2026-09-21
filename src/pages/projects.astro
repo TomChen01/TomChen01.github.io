@@ -37,6 +37,17 @@ const projects = (await getCollection('projects')).filter((project) => project.d
 						</span>
 					</summary>
 					<div class="border-t border-gray-100 py-5 space-y-4">
+						{project.data.image && (
+							<figure class="space-y-2">
+								<a href={project.data.image.src} target="_blank" rel="noopener noreferrer">
+									<img src={project.data.image.src} alt={project.data.image.alt} loading="lazy" decoding="async" class="w-full max-h-[480px] rounded-lg border border-gray-100 bg-white object-contain" />
+								</a>
+								<figcaption class="text-xs leading-relaxed text-gray-500">
+									{project.data.image.caption}{' '}
+									<a href={project.data.image.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-blue-600">Source</a>
+								</figcaption>
+							</figure>
+						)}
 						<p class="text-sm leading-relaxed text-gray-600">{project.data.description}</p>
 						<div class="flex flex-wrap gap-2">
 							{project.data.tags.map((tag) => (

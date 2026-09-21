@@ -5,4 +5,9 @@ tags: ["PyTorch", "Model Editing", "Causal Tracing", "Transformers"]
 date: "Nov 2025 – Dec 2025"
 repoUrl: "https://github.com/pekingappG/CS182-Project"
 publishDate: 2025-12-10
+image:
+  src: "/projects/rome-causal-trace.svg"
+  alt: "ROME causal tracing diagram identifying hidden states involved in factual recall."
+  caption: "Related research illustration: ROME causal tracing, Meng et al. (2022); not a result from this project."
+  sourceUrl: "https://rome.baulab.info/"
 ---

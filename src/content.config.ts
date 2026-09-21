@@ -10,6 +10,12 @@ const projects = defineCollection({
     tags: z.array(z.string()),
     date: z.string(),
     repoUrl: z.url().optional(),
+    image: z.object({
+      src: z.string(),
+      alt: z.string(),
+      caption: z.string(),
+      sourceUrl: z.url(),
+    }).optional(),
     publishDate: z.coerce.date(),
     published: z.boolean().default(true),
   }),
