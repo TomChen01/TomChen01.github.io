@@ -22,46 +22,13 @@ const projects = (await getCollection('projects')).filter((project) => project.d
 
 		<div class="divide-y divide-gray-100 border-y border-gray-100">
 			{projects.map((project) => (
-				<details class="group">
-					<summary class="flex cursor-pointer list-none flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
-						<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-							<h2 class="text-lg font-semibold text-gray-900">{project.data.title}</h2>
-							<time datetime={project.data.publishDate.toISOString()} class="text-sm text-gray-400 font-mono whitespace-nowrap">
-								{project.data.date}
-							</time>
-						</div>
-						<span class="inline-flex items-center text-sm font-medium text-blue-600 group-open:text-blue-800">
-							<span class="group-open:hidden">View details</span>
-							<span class="hidden group-open:inline">Hide details</span>
-							<svg class="ml-1 h-4 w-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6"></path></svg>
-						</span>
-					</summary>
-					<div class="border-t border-gray-100 py-5 space-y-4">
-						{project.data.image && (
-							<figure class="space-y-2">
-								<a href={project.data.image.src} target="_blank" rel="noopener noreferrer">
-									<img src={project.data.image.src} alt={project.data.image.alt} loading="lazy" decoding="async" class="w-full max-h-[480px] rounded-lg border border-gray-100 bg-white object-contain" />
-								</a>
-								<figcaption class="text-xs leading-relaxed text-gray-500">
-									{project.data.image.caption}{' '}
-									<a href={project.data.image.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-blue-600">Source</a>
-								</figcaption>
-							</figure>
-						)}
-						<p class="text-sm leading-relaxed text-gray-600">{project.data.description}</p>
-						<div class="flex flex-wrap gap-2">
-							{project.data.tags.map((tag) => (
-								<span class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-500">#{tag}</span>
-							))}
-						</div>
-						{project.data.repoUrl && (
-							<a href={project.data.repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
-								View repository
-								<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0-4 4m4-4H3"></path></svg>
-							</a>
-						)}
+				<a href={`/projects/${project.id}/`} class="group flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
+					<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+						<h2 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600">{project.data.title}</h2>
+						<time datetime={project.data.publishDate.toISOString()} class="text-sm text-gray-400 font-mono whitespace-nowrap">{project.data.date}</time>
 					</div>
-				</details>
+					<span class="inline-flex shrink-0 items-center text-sm font-medium text-blue-600">View project →</span>
+				</a>
 			))}
 		</div>
 	</div>

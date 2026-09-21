@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 const site = import.meta.env.SITE;
 
 export const GET: APIRoute = async () => {
+  const projects = (await getCollection('projects')).filter((project) => project.data.published);
   const notes = (await getCollection('notes')).filter((note) => note.data.published);
   const notesLastmod = notes
     .map((note) => note.data.updatedDate ?? note.data.pubDate)
@@ -14,6 +15,7 @@ export const GET: APIRoute = async () => {
     { path: '/', lastmod: '2026-09-12' },
     { path: '/about/', lastmod: '2026-09-12' },
     { path: '/projects/' },
+    ...projects.map((project) => ({ path: `/projects/${project.id}/` })),
     { path: '/notes/', lastmod: notesLastmod },
     ...notes.map((note) => ({
       path: `/notes/${note.id}/`,
