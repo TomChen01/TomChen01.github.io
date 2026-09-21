@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 
 type Props = { project: CollectionEntry<'projects'> };
 const { project } = Astro.props;
-const { title, description, date, publishDate, tags, image, repoUrl } = project.data;
+const { title, description, date, publishDate, tags, repoUrl } = project.data;
 ---
 
 <BaseLayout
@@ -38,16 +38,6 @@ const { title, description, date, publishDate, tags, image, repoUrl } = project.
         <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">View repository ↗</a>
       )}
     </header>
-    {image && (
-      <figure class="space-y-3">
-        <a href={image.src} target="_blank" rel="noopener noreferrer">
-          <img src={image.src} alt={image.alt} decoding="async" class="w-full h-auto rounded-lg border border-gray-100 bg-white" />
-        </a>
-        <figcaption class="text-xs leading-relaxed text-gray-500">
-          {image.caption}{' '}
-          <a href={image.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-blue-600">Source</a>
-        </figcaption>
-      </figure>
-    )}
+
   </article>
 </BaseLayout>
