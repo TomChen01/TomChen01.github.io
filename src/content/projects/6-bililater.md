@@ -7,6 +7,14 @@ repoUrl: "https://github.com/TomChen01/bililater"
 publishDate: 2026-09-20
 ---
 
+<figure>
+  <a href="/projects/6-bililater/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/6-bililater/architecture.png" alt="Progressive title, metadata, and subtitle classification, with checkpoints and manual overrides." width="1752" height="897" loading="eager" decoding="async" />
+  </a>
+  <figcaption>Progressive title, metadata, and subtitle classification, with checkpoints and manual overrides. <a href="/projects/6-bililater/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## The problem
 A growing Bilibili Watch Later list becomes difficult to browse by topic. BiliLater turns that queue into a collection that users can classify, inspect, and organize.
 

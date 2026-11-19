@@ -6,6 +6,14 @@ date: "Jul 2026 – Sep 2026"
 publishDate: 2026-07-01
 ---
 
+<figure>
+  <a href="/projects/4-cosco-shipping/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/4-cosco-shipping/architecture.png" alt="Current controlled queries and parallel analysis modules, with the planned SQLBot-based next phase shown separately." width="1774" height="887" loading="eager" decoding="async" />
+  </a>
+  <figcaption>Current controlled queries and parallel analysis modules, with the planned SQLBot-based next phase shown separately. <a href="/projects/4-cosco-shipping/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## The problem
 Commodity and shipping analysis draws on information spread across vessel movements, ports, freight rates, and arrivals. Analysts need a way to connect these sources and ask domain-specific questions without manually assembling every query.
 

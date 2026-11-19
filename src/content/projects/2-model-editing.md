@@ -7,6 +7,14 @@ repoUrl: "https://github.com/pekingappG/CS182-Project"
 publishDate: 2025-12-10
 ---
 
+<figure>
+  <a href="/projects/2-model-editing/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/2-model-editing/architecture.png" alt="Conceptual experimental design comparing neuron-level and layer-level editing. This illustration is not a reconstruction of the original code." width="1752" height="897" loading="eager" decoding="async" />
+  </a>
+  <figcaption>Conceptual experimental design comparing neuron-level and layer-level editing. This illustration is not a reconstruction of the original code. <a href="/projects/2-model-editing/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## Research question
 When a language model is edited to change one fact, what happens to unrelated knowledge that shares the same internal representations? This project investigates that question through polysemanticity: neurons that participate in more than one concept.
 

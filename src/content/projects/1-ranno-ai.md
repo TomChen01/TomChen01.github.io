@@ -7,6 +7,14 @@ repoUrl: "https://github.com/TomChen01/ranno.ai"
 publishDate: 2025-10-15
 ---
 
+<figure>
+  <a href="/projects/1-ranno-ai/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/1-ranno-ai/architecture.png" alt="Route generation, followed by route risk analysis and nearby amenities." width="1752" height="897" loading="eager" decoding="async" />
+  </a>
+  <figcaption>Route generation, followed by route risk analysis and nearby amenities. <a href="/projects/1-ranno-ai/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## The problem
 Route planning needs more than a destination when a user also cares about nearby amenities and the surrounding environment. Ranno.ai connects natural-language requests to a structured route-planning workflow.
 

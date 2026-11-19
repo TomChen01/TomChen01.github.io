@@ -7,6 +7,14 @@ repoUrl: "https://github.com/Thysrael/Horizon"
 publishDate: 2026-06-01
 ---
 
+<figure>
+  <a href="/projects/5-horizon/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/5-horizon/architecture.png" alt="News ingestion, deduplication, editorial selection, enrichment, and delivery." width="2172" height="724" loading="eager" decoding="async" />
+  </a>
+  <figcaption>News ingestion, deduplication, editorial selection, enrichment, and delivery. <a href="/projects/5-horizon/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## The problem
 A personalized news digest needs to balance relevance with coverage. Selecting only the highest-scoring stories can allow one topic to dominate, while processing every candidate adds unnecessary downstream work.
 

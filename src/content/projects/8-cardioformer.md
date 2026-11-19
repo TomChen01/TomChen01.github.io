@@ -6,6 +6,14 @@ date: "Apr 2026 – Present"
 publishDate: 2026-04-01
 ---
 
+<figure>
+  <a href="/projects/8-cardioformer/architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open architecture diagram at full size">
+    <img src="/projects/8-cardioformer/architecture.png" alt="Two independent MedBERT adaptations: eight clinical-field reconstruction tasks and five troponin direction outputs." width="1754" height="897" loading="eager" decoding="async" />
+  </a>
+  <figcaption>Two independent MedBERT adaptations: eight clinical-field reconstruction tasks and five troponin direction outputs. <a href="/projects/8-cardioformer/architecture.png" target="_blank" rel="noopener noreferrer">View full size</a>.</figcaption>
+</figure>
+
+
 ## Current research questions
 The current work focuses on two tasks: reconstructing masked categorical clinical fields and predicting whether the next measured troponin value will rise or fall, evaluated across five follow-up time buckets.
 
